@@ -1,0 +1,2627 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crypto-Chartjs</title>
+  <!--<link rel="stylesheet" href="./style.css">--->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text:400,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto+Mono:400,500'><link rel="stylesheet" href="./style.css">
+<!---<body onload="updateYTD(); setInterval('updateYTD()', 10000 )">-->
+
+ <!-- <body onload="updateClock(); setInterval('updateClock()', 1000 )">-->
+
+<body onload="updateDay24Change(); setInterval('updateDay24Change()', 1000 )">
+
+<body onload="printDay24Chart(); setInterval('printDay24Chart()', 1000 )">
+<body onload="printHour1Chart(); setInterval('printHour1Chart()', 1000 )">
+<body onload="updateHour1Change(); setInterval('updateHour1Change()', 1000 )">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js" integrity="sha256-5oApc/wMda1ntIEK4qoWJ4YItnV4fBHMwywunj8gPqc=" crossorigin="anonymous"></script>
+
+</head>
+
+<script>
+
+function findGetParameter(parameterName) {
+    var result = null,
+    tmp = [];
+    location.search.
+    substr(1).
+    split("&").
+    forEach(function (item) {
+      tmp = item.split("=");
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+    return result;
+  }
+
+var symArgInput = findGetParameter('sym')
+if (!symArgInput) symArgInput = "BTC"  // default to BTC if no url arg
+
+//alert("level 3 get param = " + symArgInput)
+
+</script>
+<style>
+
+* {box-sizing: border-box}
+body {font-family: "Lato", sans-serif;}
+
+
+body {
+  background-color: #FFFFFF00;
+  // background-color:rgba(0,0,0,0);
+  // background-image: url("background-image-softblack.png");
+  // opacity:.75;
+  //background: linear-gradient(#1f1f21, #000);
+  margin: 0px;
+  display: inline-block;
+  width:auto;
+  color: white;
+  overflow:hidden;
+  // margin-bottom:20px;
+}
+
+
+
+
+/* Style the tab */
+.tab {
+  float: left;
+  // position:relative;
+  //overflow: hidden;
+  // border: 1px solid #ccc;
+  background-color: inherit;
+  width: 100%;
+  height: 30px;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+
+  display: inline-block;
+  background-color: #FFFFFF00; // inherit;
+  color: inherit;
+  padding: 5px 5px;
+  width: 50px;
+  border: 0px solid #FFFFFF00;
+  outline: none;
+  text-align: center;
+  text-shadow: .1px .1px #000;
+  cursor: pointer;
+  font-family:Lato,sans-serif;
+  // font-family:"Red Hat Text", sans-serif;
+  font-size: .6em;
+  font-style:bold;
+  margin-left:auto;
+  margin-right:auto;
+  
+  
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+ background-color: #777; // background-color:rgba(255,255,255,.75); //inherit;
+ border: 0px solid #FFFFFF00;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+  background-color:#777;//inherit;
+  //color:black;
+  //text-shadow: .2px .2px #000;
+  border: 0px solid #FFFFFF00;
+}
+
+/* Style the tab content */
+.tabcontent {
+  float: left;
+  padding: 10px 10px;
+  border: 0px solid #ccc;
+  width: auto;
+  border-left: none;
+  height: auto;
+  display: none;
+  // margin-bottom:40px;
+
+}
+
+/* Style the tab content */
+.tabcontent.active {
+  float: left;
+  padding: 0px 0px;
+  border: 0px solid #ffffff00;
+  width: auto;
+  border-left: none;
+  height: auto;
+  display: inline-block;
+  // margin-bottom:10%;
+  
+}
+
+/* Clear floats after the tab */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+
+
+
+
+h1 {
+  font-size: 1em;
+}
+
+h2 {
+  font-size: .8em;
+}
+
+h1,
+h2,
+p {
+  font-family: "Red Hat Text", sans-serif;
+  color: #f3f3f3;
+}
+
+.container {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.chart-container {
+  position: relative;
+  margin: 0;
+  height: 80vh;
+  width: 95vw;
+}
+
+cards {
+  width: 100vw;
+  height: 500px;
+  display: inline-flex;
+  flex-direction: row;     // flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+
+.day24
+.day33,
+.day12,
+.hour1, .month1,
+.week1 .month3,
+.year1,
+ {
+  display: grid;
+  max-width: 1200px;
+  min-width: 600px;
+   //min-height: 600px;
+ ///max-height: 1000px;
+  grid-template-columns: 1fr;
+  // grid-template-rows: minmax(50px, 60px) 1fr;
+  grid-template: "info" "chart";
+  border-radius: 0px;
+}
+
+
+/*
+<!--.day24 {
+  box-shadow: 0px 0px 0px 0px rgba(255, 0, 0, 0.25);
+  // box-shadow: 10px 10px 20px 1px rgba(255, 0, 0, 0.25);
+}-->
+<!--.ethereum {
+  box-shadow: 10px 10px 20px 1px rgba(0, 255, 0, 0.25);
+}-->
+<!--.solana {
+  box-shadow: 10px 10px 20px 1px rgba(57, 255, 20, 0.2);
+}-->
+<!--.cosmos {
+  box-shadow: 10px 10px 20px 1px rgba(57, 255, 20, 0.2);
+}-->
+<!--.decentralized {
+  box-shadow: 10px 10px 20px 1px rgba(57, 255, 20, 0.25);
+}-->
+<!--.filecoin {
+box-shadow: 10px 10px 20px 1px rgba(255, 0, 0, 0.25);
+}->
+*/
+
+
+.asset-info {
+  grid-area: info;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0 0 0;
+  font-size:.8em;
+}
+
+.title {
+  display: block;
+}
+
+card h1 {
+  margin-left: 0px;
+}
+
+#day24Chart,
+#day33Chart,
+#day12Chart,
+#week1Chart,
+#hour1Chart,
+#month1Chart,
+#month3Chart, #year1Chart
+ {
+  grid-area: chart;
+  border-radius: 0px 0px 0px 0px;
+  margin-top: 0px;
+}
+
+
+
+
+
+</style>
+
+
+<body>
+<h1><div id='timeytdOut' style = "font-family:helvetica-light;font-size:20px;font-style:light;padding:5px;color:white;display:none;"></div></h1>
+<!--<div id='timeOut' style = "margin-left:30px;font-family:helvetica-light;font-size:6px;font-style:light;padding:5px;color:white;display:none;"></div>-->
+
+
+
+  <div>
+  <container class="container">
+   
+    <cards class="cards">
+     
+       <!--<bitcoin style="width:1800px;height:500px;" class="btc">-->
+         <day24 style="width:100vh;height:1500px;" class="day24">
+            <card class="asset-info">
+                <div class="title">
+                    <img src="https://coinicon2.s3.us-east-2.amazonaws.com/BTC.png" style="display:none;" width="0px;"> 
+                      <!--<h1 style="display:none;">BTC</h1>-->
+                </div>
+               <div class="details" style="display:inline-block;width:1000px;">
+                    <!--<h2 class="asset-price" id="timeytd" style="display:inline-block;"></h2>-->
+                    <h2 class="asset-price" id="currentPrice" style="display:none;"></h2>
+                    <!--<h2 class="asset-change" id="hour1Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="day24Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="week1Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="month1Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="month3Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="ytdChange" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="year1Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="day12Change" style="display:inline-block;color:white;"></h2>-->
+                    <!--<h2 class="asset-change" id="day33Change" style="display:inline-block;color:white;"></h2>-->
+                    <h2 class="asset-change" id="currentLow" style="display:inline-block;color:red;"></h2>
+                    <h2 class="asset-change" id="currentHigh" style="display:inline-block;color:lime;"></h2>
+                    <h2 class="asset-change" id="currentVolatility" style="display:inline-block;color:magenta;"></h2>
+                </div>
+            
+            </card><br>
+            
+
+<div class="tab">
+  <button class="tablinks" onmouseover="openCity(event, 'Hour1')"><div id=hour1Change></div></button>
+  <button class="tablinks active" onmouseover="openCity(event, 'Day24')"><div id=day24Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Week1')"><div id=week1Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Month1')"><div id=month1Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Month3')"><div id=month3Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Ytd')"><div id=ytdChange></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Year1')"><div id=year1Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Day12')"><div id=day12Change></div></button>
+  <button class="tablinks" onmouseover="openCity(event, 'Day33')"><div id=day33Change></div></button>
+</div>
+
+<br><br><br>
+
+<div id="Day24" class="tabcontent active">
+<div class="chart-container">
+ <canvas id="day24Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Day12" class="tabcontent">
+<div class="chart-container">
+ <canvas id="day12Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Day33" style="display:none;" class="tabcontent">
+<div class="chart-container">
+ <canvas id="day33Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Hour1" class="tabcontent">
+<div class="chart-container">
+ <canvas id="hour1Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+
+<div id="Week1" class="tabcontent">
+<div class="chart-container">
+ <canvas id="week1Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Month1" class="tabcontent">
+<div class="chart-container">
+ <canvas id="month1Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Month3" class="tabcontent">
+<div class="chart-container">
+ <canvas id="month3Chart" style="width:1000px;"></canvas>
+
+</div>
+</div>
+
+<div id="Year1" class="tabcontent">
+<div class="chart-container">
+ <canvas id="year1Chart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+<div id="Ytd" class="tabcontent">
+<div class="chart-container">
+ <canvas id="ytdChart" style="width:1000px;"></canvas>
+</div>
+</div>
+
+
+
+<div class="clearfix"></div>
+           
+            
+      
+
+
+        </day24>
+
+
+ 
+   
+    </cards>
+  </container>
+  </div>  
+  
+
+
+  
+ 
+
+
+
+</body>
+
+<script>
+
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+
+//function updateYTD() {
+//  const timeytdElement = document.getElementById('timeytdOut');
+//  const timeytd = Date.now() // new Date();
+//   timeytdElement.innerHTML = (((timeytd/1000) - 1609459200)/3600)
+//  }
+
+
+// let timenow = Date.now()
+// let timenow = moment(new Date()).unix()
+
+// let timeytd = ((timenow/1000) - 1640995200))/3600
+
+// timeytdElement = document.getElementById('timeytdOut');
+
+
+
+let hours = 520
+
+
+ // lookup table for charts
+
+
+
+/*  Calling API and modeling data for each chart */
+
+let sym = symArgInput 
+
+const day24Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histominute?fsym=' + sym + '&tsym=USDT&limit=1440&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+
+// ***day 12 will be 2 years****
+
+const day12Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + sym + '&tsym=USDT&limit=731&aggregate=1&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+// ***day 12 will be 2 years****
+
+const day33Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + sym + '&tsym=USDT&limit=1096&aggregate=1&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+const hour1Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histominute?fsym=' + sym + '&tsym=USDT&limit=60&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+const week1Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + sym + '&tsym=USDT&limit=168&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+const month1Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + sym + '&tsym=USDT&limit=720&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+const month3Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + sym + '&tsym=USDT&limit=2000&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(1))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+const year1Data = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=' + sym + '&tsym=USDT&limit=365&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+const ytdData = async () => {
+  const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=' + sym + '&tsym=USDT&limit=' + hours + '&api_key=4733a13eefe0ebb786b84a22b031cdb5571f88bb2aa5a5421de5e4c41f313200');
+  const json = await response.json();
+  const data = json.Data.Data
+  const times = data.map(obj => obj.time*1000)
+  const prices = data.map(obj => obj.close)
+  const opens = data.map(obj => obj.open)
+  const highs = data.map(obj => obj.high)
+  const lows = data.map(obj => obj.low)
+  const volumes = data.map(obj => obj.volumeto.toFixed(0))
+  return {
+    times,
+    prices,
+    opens,
+    highs,
+    lows,
+    volumes
+  }
+}
+
+
+
+
+/// Error handling ///
+function checkStatus(response) {
+  if (response.ok) {
+    return Promise.resolve(response);
+  } else {
+    return Promise.reject(new Error(response.statusText));
+  }
+}
+
+
+
+/// Charts ///
+let createDay24Chart
+let createDay12Chart
+let createDay33Chart
+let createHour1Chart
+let createWeek1Chart
+let createMonth1Chart
+let createMonth3Chart
+let createYear1Chart
+let createYtdChart
+
+
+
+async function printDay24Chart() {
+  let { times, prices, volumes } = await day24Data()
+
+  let day24Chart = document.getElementById('day24Chart').getContext('2d');
+
+  let gradient = day24Chart.createLinearGradient(0, 0, 0, 1000);
+
+  gradient.addColorStop(0, 'rgba(255,255,255,1)');  // white
+  gradient.addColorStop(.6, 'rgba(255,255,255,0)');  // white
+
+  // gradient.addColorStop(0, 'rgba(0,255,0,1)');  // green
+  // gradient.addColorStop(.6, 'rgba(0,255,0,0)');  //green
+
+  // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+ //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+   var cchange = day24Change.rawFloat
+
+  if (cchange < 0 ) {
+
+  gradient.addColorStop(0, 'rgba(247,147,26,.5)'); // orange
+  gradient.addColorStop(.625, 'rgba(255,0,0,0)'); // red
+   
+   
+      // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+     // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+     }  
+
+ // else {
+
+     // gradient.addColorStop(0, 'rgba(0,255,0,0.5)'); //green
+     // gradient.addColorStop(.8, 'rgba(0,255,0,0)');    //green 
+
+  // gradient.addColorStop(0, 'rgba(255,255,255,.5)');  // white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); // white
+
+ //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+  // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+ // }
+
+   
+   //let bordercolor ='rgba(245,229,27,1)';  // yellow
+
+    let bordercolor ='rgba(57,255,20,1)'; // green
+   
+   
+    if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)';  //red
+     // bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+
+     }
+
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createDay24Chart = new Chart(day24Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 3,
+        lineTension: .2,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.4)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '1D by Minute',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0.5, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           ticks: {
+                minRotation: 0,
+                autoskip: true,
+                autoSkipPadding: 0
+              },
+           
+          
+             
+             fontSize: 4,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,0)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        fontColor: 'white',
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 0,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+           // This removes the tooltip title
+          // title: function() {}
+       },
+        //this shows legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 8,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+async function printHour1Chart() {
+  let { times, prices, volumes } = await hour1Data()
+
+  let hour1Chart = document.getElementById('hour1Chart').getContext('2d');
+
+  let gradient = hour1Chart.createLinearGradient(0, 0, 0, 700);
+
+
+    gradient.addColorStop(0, 'rgba(0,255,0,1)'); //green
+    gradient.addColorStop(.8, 'rgba(0,255,0,0)'); // green
+
+   // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); // black
+   // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  let cchange = hour1Change.rawFloat
+
+  if (cchange < 0) {
+   
+      gradient.addColorStop(0, 'rgba(247,147,26,.8)'); // red
+      gradient.addColorStop(.525, 'rgba(255,0,0,0)');  //red
+
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+     //gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    //gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+    }
+
+ 
+   let bordercolor ='rgba(57,255,20,1)'; // green
+
+  // let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; // red
+     // let bordercolor ='rgba(245,229,27,1)' // yellow #f5e51b
+
+
+  }
+
+
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createHour1Chart = new Chart(hour1Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 3,
+        lineTension: .2,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '1 Hour Price by Minute',
+        fontSize: 8
+      },
+      elements: {
+            line: {
+                tension: .5, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right:10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           
+            ticks: {
+             minRotation: 0,
+             autoskip: true,
+             autoSkipPadding: 0
+          },
+             
+            fontSize: 5,
+             gridLines: {
+             color: "rgba(255, 255, 255, .1)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 4,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:true
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          // title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 20,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+//*** day12 is 2years**** //
+
+async function printDay12Chart() {
+  let { times, prices, volumes } = await day12Data()
+
+  let day12Chart = document.getElementById('day12Chart').getContext('2d');
+
+  let gradient = day12Chart.createLinearGradient(0, 0, 0, 1000); //white
+
+  // let gradient = day12Chart.createLinearGradient(0, 0, 0, 500); //greenred
+
+
+  gradient.addColorStop(0, 'rgba(0,255,0,1)'); // green
+  gradient.addColorStop(.8, 'rgba(0,255,0,0)'); // green 
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+    // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+   // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+  let cchange = day12Change.rawFloat
+
+  if (cchange < 0) {
+   
+   gradient.addColorStop(0, 'rgba(247,147,26,.5)'); //red
+   gradient.addColorStop(.725, 'rgba(255,0,0,0)'); // red
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+    // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+   // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+    }
+
+  
+   let bordercolor ='rgba(57,255,20,1)'; // green
+     //let bordercolor ='rgba(245,229,27,1)'; //yellow yellow #f5e51b
+   
+  if (cchange < 0) {
+   
+     bordercolor = 'rgba(255,0,0,1)'; //red
+    // bordercolor ='rgba(245,229,27,1)';  // yellow yellow #f5e51b
+
+    }
+
+
+
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createDay12Chart = new Chart(day12Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: 0,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '2 Year Price by Day',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           ticks: {
+                minRotation: 0,
+                autoskip: true,
+                autoSkipPadding: 0
+              },
+           
+          
+             
+             fontSize: 5,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,0)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 8,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        fontColor: 'white',
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 0,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+           // This removes the tooltip title
+          // title: function() {}
+       },
+        //this shows legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 10,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+// ****day33 is 3 years*****
+
+async function printDay33Chart() {
+  let { times, prices, volumes } = await day33Data()
+
+  let day33Chart = document.getElementById('day33Chart').getContext('2d');
+
+  let gradient = day33Chart.createLinearGradient(0, 0, 0, 1100);
+
+
+    gradient.addColorStop(0, 'rgba(0,255,0,1)'); // green
+    gradient.addColorStop(.8, 'rgba(0,255,0,0)'); //green 
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   //  gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+  let cchange = day33Change.rawFloat
+
+  if (cchange < 0) {
+   
+   gradient.addColorStop(0, 'rgba(247,147,26,.5)'); //red
+   gradient.addColorStop(.725, 'rgba(255,0,0,0)'); // red
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+    // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+   // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+   // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+    }
+
+    let bordercolor ='rgba(57,255,20,1)'; //green
+    // let bordercolor ='rgba(245,229,27,1)'; //yellow
+   
+  if (cchange < 0) {
+   
+    bordercolor = 'rgba(255,0,0,1)'; //red
+    // bordercolor ='rgba(245,229,27,1)'; //yellow #f5e51b
+
+    }
+
+
+
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createDay33Chart = new Chart(day33Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: 0,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.4)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '3 Year Price by Day',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           ticks: {
+                minRotation: 0,
+                autoskip: true,
+                autoSkipPadding: 0
+              },
+           
+          
+             
+             fontSize: 5,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,0)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        fontColor: 'white',
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 0,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+           // This removes the tooltip title
+          // title: function() {}
+       },
+        //this shows legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 10,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+
+
+
+async function printWeek1Chart() {
+  let { times, prices, volumes} = await week1Data()
+
+  let week1Chart = document.getElementById('week1Chart').getContext('2d');
+
+  let gradient = week1Chart.createLinearGradient(0, 0, 0, 1000);
+
+
+     gradient.addColorStop(0, 'rgba(15,255,80,.5)'); //green
+     gradient.addColorStop(.725, 'rgba(0,255,0,0)'); //green
+
+   // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); // white
+
+     //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+     //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  let cchange = week1Change.rawFloat
+
+  if (cchange < 0) {
+   
+      gradient.addColorStop(0, 'rgba(247,147,26,.8)'); // red
+      gradient.addColorStop(.425, 'rgba(255,0,0,0)'); // red
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); // white
+
+    //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+    }
+
+    let bordercolor ='rgba(57,255,20,1)'; // green
+     // let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; //red 
+      // bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+
+    }
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+ 
+
+  createWeek1Chart = new Chart(week1Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: 0,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.1)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '1W Price by Hour',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           time: {
+             unit: 'day',
+             tooltipFormat: 'lll'
+           },
+           distribution: 'series',
+           display: true,
+           
+            ticks: {
+            minRotation: 0,
+            autoskip: true,
+            autoSkipPadding: 0
+          },
+             
+            fontSize: 7,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+          ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          //title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 20,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+async function printMonth1Chart() {
+  let { times, prices,volumes } = await month1Data()
+
+  let month1Chart = document.getElementById('month1Chart').getContext('2d');
+
+  let gradient = month1Chart.createLinearGradient(0, 0, 0, 1000);
+
+      gradient.addColorStop(0, 'rgba(0,255,0,.8)'); // green
+      gradient.addColorStop(.45, 'rgba(0,255,0,0)'); // green
+
+  //  gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+  let cchange = month1Change.rawFloat
+
+  if (cchange < 0) {
+   
+      gradient.addColorStop(0, 'rgba(247,147,26,.8)'); // red
+      gradient.addColorStop(.425, 'rgba(255,0,0,0)'); // red
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+    // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+    } else {
+   
+      gradient.addColorStop(0, 'rgba(15,255,80, .5)'); //green
+      gradient.addColorStop(.8, 'rgba(0,255,0,0)'); //green 
+
+     // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+     // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  }
+
+
+   let bordercolor ='rgba(57,255,20,1)'; // green
+    // let bordercolor ='rgba(245,229,27,1)';  // yellow #f5e51b
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; //red
+     //  bordercolor ='rgba(245,229,27,1)';  // yellow #f5e51b
+
+    }
+
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+  Chart.defaults.global.defaultFontColor = '#cdcdcd';
+
+
+  createMonth1Chart = new Chart(month1Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: 0,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '1M Price by Hour',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           display: true,
+           
+            ticks: {
+            minRotation: 0,
+            maxRotation: 0,
+            autoskip: true,
+            autoSkipPadding: 0
+          },
+             
+            fontSize: 8,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+          ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          // title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.1)',
+        bodyFontSize: 15,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+async function printMonth3Chart() {
+  let { times, prices, volumes } = await month3Data()
+
+  let month3Chart = document.getElementById('month3Chart').getContext('2d');
+
+  let gradient = month3Chart.createLinearGradient(0, 0, 0, 900);
+
+     gradient.addColorStop(0, 'rgba(0,255,0,1)'); //green
+     gradient.addColorStop(.7, 'rgba(0,255,0,0)');  //green
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+    // gradient.addColorStop(.425, 'rgba(255,255,255,0)'); //white
+
+    // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  let cchange = month3Change.rawFloat
+
+  if (cchange < 0) {
+
+     gradient.addColorStop(0, 'rgba(247,147,26,.8)'); //red
+      gradient.addColorStop(.425, 'rgba(255,0,0,0)'); //red
+
+    //  gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   //   gradient.addColorStop(.425, 'rgba(255,255,255,0)'); //white
+
+   //  gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+
+  } else {
+   
+      gradient.addColorStop(0, 'rgba(0,255,0,1)'); //green
+      gradient.addColorStop(.8, 'rgba(0,255,0,0)'); //green 
+
+    // gradient.addColorStop(0, 'rgba(15,255,80,.15)'); // another green
+    // gradient.addColorStop(.725, 'rgba(0,255,0,0)');// another green
+
+     // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+     // gradient.addColorStop(.425, 'rgba(255,255,255,0)'); //white
+
+     // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+     // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  }
+
+    let bordercolor ='rgba(57,255,20,1)'; //green
+    //let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; // red
+      // bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+
+    }
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createMonth3Chart = new Chart(month3Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: 0,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '3M Price by Hour',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 10,
+          top: 0,
+          bottom: 20
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           
+            ticks: {
+            minRotation: 0,
+            autoskip: true,
+            autoSkipPadding: 0
+          },
+             
+            fontSize: 10,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 8,
+          ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+         display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          // title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.2)',
+        bodyFontSize: 20,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+
+async function printYear1Chart() {
+  let { times, prices, volumes } = await year1Data()
+
+  let year1Chart = document.getElementById('year1Chart').getContext('2d');
+
+  let gradient = year1Chart.createLinearGradient(0, 0, 0, 1200);
+
+     gradient.addColorStop(0, 'rgba(0,255,0,.8)'); //green
+     gradient.addColorStop(.525, 'rgba(0,255,0,0)'); //green
+
+   // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+  //  gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  let cchange = year1Change.rawFloat
+
+  if (cchange < 0) {
+
+      gradient.addColorStop(0, 'rgba(247,147,26,.4)'); //green
+      gradient.addColorStop(.425, 'rgba(255,0,0,0)'); //green
+
+    // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); // white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+     // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    //  gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+   }
+
+     let bordercolor ='rgba(57,255,20,1)'; // green
+     // let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; //red
+     // let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+      // let bordercolor ='rgba(255,255,0,1)'; // yellow #f5E51B ripe lemon eee400 faef00 #ffff00 is 255 255 0
+
+    }
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createYear1Chart = new Chart(year1Chart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: .2,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: '1Y Price by Day',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: .2, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 10
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           distribution: 'series',
+           display: true,
+           
+            ticks: {
+            minRotation: 0,
+            autoskip: true,
+            autoSkipPadding: 0
+          },
+             
+            fontSize: 6,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 6,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          // title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.2)',
+        bodyFontSize: 20,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+
+
+
+async function printYtdChart() {
+  let { times, prices, volumes } = await ytdData()
+
+  let ytdChart = document.getElementById('ytdChart').getContext('2d');
+
+  let gradient = ytdChart.createLinearGradient(0, 0, 0, 1200);
+
+      gradient.addColorStop(0, 'rgba(0,255,0,.8)'); //green #00ff00 lime
+       gradient.addColorStop(.425, 'rgba(0,255,0,0)'); // green #00ff00 lime
+
+   // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+    // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+    // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+  let cchange = ytdChange.rawFloat
+
+  if (cchange < 0) {
+
+    gradient.addColorStop(0, 'rgba(247,147,26,.8)'); // red #f7931a vivid orange
+    gradient.addColorStop(.325, 'rgba(255,0,0,0)');  // red #FF0000 red
+
+   // gradient.addColorStop(0, 'rgba(255,255,255,.5)'); //white
+   // gradient.addColorStop(.8, 'rgba(255,255,255,0)'); //white
+
+     // gradient.addColorStop(0, 'rgba(0,0,0,.6)'); //black
+     // gradient.addColorStop(.8, 'rgba(0,0,0,.05)'); //black
+
+   }
+
+    let bordercolor ='rgba(57,255,20,1)'; // green #39FF14 harlequin
+    // let bordercolor ='rgba(245,229,27,1)'; // yellow #f5E51B ripe lemon
+   
+  if (cchange < 0) {
+   
+      bordercolor = 'rgba(255,0,0,1)'; // red #FF0000
+     // let bordercolor ='rgba(255,255,0,1)'; // yellow #f5E51B ripe lemon eee400 faef00 #ffff00 is 255 255 0
+     //let bordercolor ='rgba(245,229,27,1)'; // yellow #f5e51b
+
+    }
+
+  Chart.defaults.global.defaultFontFamily = 'Red Hat Text';
+  Chart.defaults.global.defaultFontSize = 12;
+
+  createYtdChart = new Chart(ytdChart, {
+    type: 'bar',
+    data: {
+      labels: times,
+      datasets: [{
+        label: 'Price $',
+        data: prices,
+        yAxisID: 'left',
+        backgroundColor: gradient,
+        borderColor: bordercolor,
+        borderJoinStyle: 'round',
+        borderCapStyle: 'round',
+        borderWidth: 2,
+        order: 2,
+        type : 'line',
+        pointRadius: 0,
+        pointHitRadius: 5,
+        lineTension: .2,
+      },
+       {
+        label: 'Exchange $Volume',
+        data: volumes, //start empty
+        type: 'bar',
+        yAxisID: 'right',
+        backgroundColor: "rgba(255,255,255,0.2)",
+        order: 1,
+        pointRadius: 0
+      } 
+      ]
+    },
+
+    options: {
+      title: {
+        display: false,
+        text: 'YTD YeartoDate Price by Hour',
+        fontSize: 10
+      },
+      elements: {
+            line: {
+                tension: 0, // disables bezier curves
+                borderCapStyle: 'round'
+            }
+       },
+      legend: {
+        display: false,
+      },
+
+      layout: {
+        padding: {
+          left: 0,
+          right: 5,
+          top: 0,
+          bottom: 10
+        }
+      },
+      maintainAspectRatio: false,
+      scales: {
+        xAxes: [{
+           type: 'time',
+           time: {
+             unit: 'day',
+             tooltipFormat: 'lll'
+           },
+           distribution: 'series',
+           display: true,
+           
+            ticks: {
+            minRotation: 0,
+            autoskip: true,
+            autoSkipPadding: 0
+          },
+             
+            fontSize: 10,
+             gridLines: {
+             color: "rgba(255, 255, 255, 0)",
+            }
+        }],
+        yAxes: [{
+          display: true,
+          gridLines: {
+            color: "rgb(255, 255, 255,.1)",
+          }
+        }],
+        yAxes: [{
+        id: 'left',
+        fontSize: 8,
+        ticks: {
+                    fontColor: 'yellow'
+                },
+        type: 'linear',
+        position: 'right',
+        gridLines: {
+                display:true,
+                color: "rgb(255, 255, 255,.1)",
+            }
+      }, {
+        display: false,
+        id: 'right',
+        fontSize: 8,
+        type: 'linear',
+        position: 'left',
+        gridLines: {
+                display:false
+            }
+      }]
+
+      },
+
+      tooltips: {
+        mode: 'index',
+        callbacks: {
+          //This removes the tooltip title
+          // title: function() {}
+       },
+        //this removes legend color
+        displayColors: true,
+        yPadding: 15,
+        xPadding: 15,
+        position: 'nearest',
+        caretSize: 10,
+        backgroundColor: 'rgba(255,255,255,.2)',
+        bodyFontSize: 20,
+        bodyFontColor: '#ffffff' 
+      }
+    }
+  });
+}
+
+
+
+
+
+/// Update current price ///
+
+
+  //***day12-2years and day33-3years***//
+
+
+
+// async function updateDay24Price() {
+ // let { times, prices } = await day24Data()
+ // let currentPrice = prices[prices.length-1].toFixed(3);
+
+ // document.getElementById("day24Price").innerHTML = "$" + currentPrice;
+// }
+
+async function updateDay12Price() {
+  let { times, prices } = await day12Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("day12Price").innerHTML = "$" + currentPrice;
+}
+
+async function updateDay33Price() {
+  let { times, prices } = await day33Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("day33Price").innerHTML = "$" + currentPrice;
+}
+
+
+async function updateHour1Price() {
+  let { times, prices } = await hour1Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("hour1Price").innerHTML = "$" + currentPrice;
+}
+
+
+async function updateWeek1Price() {
+  let { times, prices } = await week1Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("week1Price").innerHTML = "$" + currentPrice;
+}
+
+
+async function updateMonth1Price() {
+  let { times, prices } = await month1Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("month1Price").innerHTML = "$" + currentPrice;
+}
+
+
+async function updateMonth3Price() {
+  let { times, prices } = await month3Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("month3Price").innerHTML = "$" + currentPrice;
+}
+
+async function updateYear1Price() {
+  let { times, prices } = await year1Data()
+  let currentPrice = prices[prices.length-1].toFixed(3);
+
+  document.getElementById("year1Price").innerHTML = "$" + currentPrice;
+}
+
+
+
+async function updateDay24Change() {
+  let { times, opens, prices, highs, lows } = await day24Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen;
+  
+  
+document.getElementById("day24Change").innerHTML = ' 1D ' + (currentChange*100).toFixed(2) + "%"
+document.getElementById("currentPrice").innerHTML = currentClose.toFixed(3)
+
+
+   if (currentChange > 0) {
+   day24Change.style.color = 'lime';
+   day24Change.rawFloat = currentChange;
+   day24Change.innerHTML = ' 1D ' + '<i class="fas fa-arrow-up"></i>' + '+' + (currentChange*100).toFixed(3) + "%"
+   } else {
+   day24Change.style.color = 'red';
+   day24Change.rawFloat = currentChange;
+   day24Change.innerHTML = ' 1D ' + '<i class="fas fa-arrow-down"></i>' + (currentChange*100).toFixed(3) + "%" 
+   }
+}
+
+//***day12-2years and day33-3years***
+
+async function updateDay12Change() {
+  let { times, opens, prices } = await day12Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen
+  
+document.getElementById("day12Change").innerHTML = " 2Y:"+ (currentChange*100).toFixed(2) + "%"
+
+   if (currentChange < 0) {
+   day12Change.style.color = 'red';
+   day12Change.rawFloat = currentChange;
+   day12Change.innerHTML = ' 2Y ' + '<i class="fas fa-arrow-down"></i>' + Math.round(currentChange*100) + "%"
+   } else {
+   day12Change.style.color = 'lime';
+   day12Change.rawFloat = currentChange;
+   day12Change.innerHTML = ' 2Y ' + '<i class="fas fa-arrow-up"></i>' + ('+' + Math.round(currentChange*100) + "%")
+   }
+}
+
+
+//***dday33-3years***
+
+async function updateDay33Change() {
+  let { times, opens, prices } = await day33Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen
+  
+document.getElementById("day33Change").innerHTML = " 3Y "+ Math.round(currentChange*100) + "%"
+
+   if (currentChange < 0) {
+   day33Change.style.color = 'red';
+   day33Change.rawFloat = currentChange;
+   day33Change.innerHTML = ' 3Y ' + '<i class="fas fa-arrow-down"></i>' + Math.round(currentChange*100) + "%"
+   } else {
+   day33Change.style.color = 'lime';
+   day33Change.rawFloat = currentChange;
+   day33Change.innerHTML = ' 3Y ' + '<i class="fas fa-arrow-up"></i>' + ('+' + Math.round(currentChange*100) + "%")
+   }
+}
+
+
+async function updateHour1Change() {
+  let { times, opens, prices } = await hour1Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)*100/currentOpen
+  
+document.getElementById("hour1Change").innerHTML = " 1H "+ currentChange.toFixed(3) + "%"
+
+   if (currentChange < 0) {
+   hour1Change.style.color = 'red'
+   hour1Change.rawFloat = currentChange;
+   hour1Change.innerHTML = " 1H " + '<i class="fas fa-arrow-down"></i>' + currentChange.toFixed(3) + "%"
+
+   } else {
+
+   hour1Change.style.color = 'lime'
+   hour1Change.rawFloat = currentChange;
+   hour1Change.innerHTML = "  1H  " + '<i class="fas fa-arrow-up"></i>' + ("+" + currentChange.toFixed(3) + "%")
+   
+   }
+}
+
+
+async function updateWeek1Change() {
+  let { times, opens, prices } = await week1Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen
+  
+document.getElementById("week1Change").innerHTML = " 1W "+ (currentChange).toFixed(3) + "%"
+
+   if (currentChange < 0) {
+   week1Change.style.color = 'red';
+   week1Change.rawFloat = currentChange;
+   week1Change.innerHTML = " 1W "+ '<i class="fas fa-arrow-down"></i>'+ currentChange.toFixed(3) + "%"
+
+   } else {
+   week1Change.style.color = 'lime';
+   week1Change.rawFloat = currentChange;
+   week1Change.innerHTML = " 1W " + '<i class="fas fa-arrow-up"></i>' + "+" + currentChange.toFixed(3) + "%"
+   }
+}
+
+
+async function updateMonth1Change() {
+  let { times, opens, prices } = await month1Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)*100/currentOpen
+  
+document.getElementById("month1Change").innerHTML = " 1M:"+ (currentChange).toFixed(2) + "%"
+
+   if (currentChange > 0) {
+   month1Change.style.color = 'lime';
+   month1Change.rawFloat = currentChange;
+   month1Change.innerHTML = " 1M " + '<i class="fas fa-arrow-up"></i>' + "+"+ currentChange.toFixed(2) + "%"
+   } else {
+   month1Change.style.color = 'red';
+   month1Change.rawFloat = currentChange;
+   month1Change.innerHTML = " 1M "+ '<i class="fas fa-arrow-down"></i>' + currentChange.toFixed(2) + "%"
+   }
+}
+
+
+
+async function updateMonth3Change() {
+  let { times, opens, prices,highs,lows } = await month3Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)*100/currentOpen;
+  let currentHigh = highs[highs.length-2];
+  let currentLow = lows[lows.length-1];
+  let currentVolatility = (currentHigh - currentLow)/currentOpen
+  
+  
+document.getElementById("month3Change").innerHTML = " 3M: "+ (currentChange).toFixed(2) + "% "
+document.getElementById("currentHigh").innerHTML = " High:" + currentHigh
+document.getElementById("currentLow").innerHTML = " Low:" + currentLow
+document.getElementById("currentVolatility").innerHTML = "Volatility:" + (100*currentVolatility).toFixed(2) + "% "
+
+   if (currentChange < 0) {
+   month3Change.style.color = 'red';
+   month3Change.rawFloat = currentChange;
+   month3Change.innerHTML = " 3M "+ '<i class="fas fa-arrow-down"></i>' + currentChange.toFixed(2) + "%"
+   } else {
+   month3Change.style.color = 'lime';
+   month3Change.rawFloat = currentChange;
+   month3Change.innerHTML = " 3M " + '<i class="fas fa-arrow-up"></i>' + ("+" + currentChange.toFixed(2) + "%")
+   }
+}
+
+
+
+async function updateYear1Change() {
+  let { times, opens, prices } = await year1Data()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen
+  
+document.getElementById("year1Change").innerHTML = "1Y: "+ (currentChange*100).toFixed(2) + "% "
+
+
+   if (currentChange < 0) {
+   year1Change.style.color = 'red';
+   year1Change.rawFloat = currentChange;
+   year1Change.innerHTML = " 1Y " + '<i class="fas fa-arrow-down"></i>' + currentChange.toFixed(2) + "%"
+   } else {
+   year1Change.style.color = 'lime';
+   year1Change.rawFloat = currentChange;
+   year1Change.innerHTML = " 1Y "  + '<i class="fas fa-arrow-up"></i>' + ("+"+ currentChange.toFixed(2) + "%")
+   }
+}
+
+
+
+async function updateYtdChange() {
+  let { times, opens, prices } = await ytdData()
+  let currentOpen = opens[0];
+  let currentClose = prices[prices.length-1];
+  let currentChange = (currentClose - currentOpen)/currentOpen
+  
+document.getElementById("ytdChange").innerHTML = "YTD "+ (currentChange*100).toFixed(3) + "% "
+
+
+   if (currentChange < 0) {
+   ytdChange.style.color = 'red';
+   ytdChange.rawFloat = currentChange;
+   ytdChange.innerHTML = " YTD " + '<i class="fas fa-arrow-down"></i>' + currentChange.toFixed(3) + "%"
+   } else {
+   ytdChange.style.color = 'lime';
+   ytdChange.rawFloat = currentChange;
+   ytdChange.innerHTML = " YTD " + '<i class="fas fa-arrow-up"></i>' + ("+"+ currentChange.toFixed(3) + "%")
+   }
+}
+
+
+
+//***day12-2years and day33-3years***
+
+updateDay24Change()
+updateDay12Change()
+updateDay33Change()
+updateHour1Change()
+updateWeek1Change()
+updateMonth1Change()
+updateMonth3Change()
+updateYear1Change()
+updateYtdChange()
+
+
+
+
+
+//updateDay24Price()
+//updateDay12Price()
+//updateDay33Price()
+//updateHour1Price()
+//updateWeek1Price()
+//updateMonth1Price()
+//updateMonth3Price()
+//updateYear1Price()
+
+
+//***day12-2years and day33-3years***
+
+printDay24Chart()
+printDay12Chart()
+printDay33Chart()
+printHour1Chart()
+printWeek1Chart()
+printMonth1Chart()
+printMonth3Chart()
+printYear1Chart()
+printYtdChart()
+
+
+
+
+
+
+/* Chart secton ends here */
+
+
+
+
+
+</script>
+
+
+
+</html>

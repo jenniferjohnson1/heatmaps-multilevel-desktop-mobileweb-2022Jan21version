@@ -1,0 +1,3136 @@
+
+<!DOCTYPE html>  
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--<body onload="updateClock(); setInterval('updateClock()', 1000 )">-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js" integrity="sha256-5oApc/wMda1ntIEK4qoWJ4YItnV4fBHMwywunj8gPqc=" crossorigin="anonymous"></script>
+
+<link href='https://fonts.googleapis.com/css?family=Helvetica' rel='stylesheet'>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css?family=Red+Hat+Text:400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,600,700,800&display=swap" rel="stylesheet">
+<link href='https://fonts.googleapis.com/css?family=Helvetica Neue' rel='stylesheet'>
+</head>
+
+ 
+  <style>
+
+* {box-sizing: border-box;}
+
+body {
+  background-color: black;
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  display:block;
+  // display: inline-block; 
+  width: 98vw; 
+  overflow-x: hidden; 
+  margin:10px;
+  margin-left:20px;
+  margin-right:auto;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  padding:5px;
+}
+
+
+
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.overlay {
+  position: absolute; 
+  bottom: 0; 
+  background: rgb(0, 0, 0);
+  background: rgba(0, 0, 0, 0); /* Black see-through */
+  color: #ffffff; //color: white;
+  width: 100%;
+  transition: .5s ease;
+  opacity:1;
+  color: white;
+  font-size:1em;
+  padding: 10px;
+  text-align: left;
+  color: white; 
+ 
+}
+
+.container:hover .overlay {
+  opacity: 1;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0); /* White see-through */
+}
+
+
+tickers {
+   -webkit-text-stroke-width: .5px;
+   -webkit-text-stroke-color: black;
+ 
+}
+
+tickers:hover {
+   -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+   font-size: .9em;
+   font-weight:600;
+
+}
+
+
+#myInput {
+  background-position: 10px 10px;4
+  background-repeat: no-repeat;
+  width:20%;
+  height:30px;
+  border: 0px solid #ddd;
+  margin-bottom: 12px;
+  background-color: #171924;
+  color: white;
+  font-color: white;
+  font-family:helvetica;
+  font-size:11px;
+  padding-left: 10px;
+  padding-right: 0px;
+}
+
+
+
+
+
+
+.dark-mode {
+  background-color:black; /* was white */
+  color: black;
+}
+
+    .red {color:red;}
+    .offwhite {color:'#fefefe';}
+
+  @keyframes popRed {
+    from {color: red;}
+    to {color: '#fefefe';}
+  }
+
+  @keyframes popGreen {
+    from {color: #23ff0b;}
+    to {color: '#fefefe';}
+
+  }
+
+  @keyframes popRed1 {
+    from {color: red;}
+    to {color: '#fefefe';}
+  }
+
+  @keyframes popGreen1 {
+    from {color: #23ff0b;}
+    to {color:'#fefefe';}
+  }
+
+  .dropdown {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border-radius: 0px;
+      border-style:none;
+      padding-left: 20px;
+      padding-right: 20px;
+      height: 30px;
+      color: #a3a3a3;
+      background-color: #171924;
+      font-family:helvetica;
+      font-size:11px;
+
+  }
+
+   .dropdown:hover {
+       background-color: #212530;
+       color: white;
+       font-color:white;
+}
+
+  img {
+  border-radius: 0%; /* remove for news */
+  }
+
+  .boostFont {
+     -webkit-transform: scale(1.1);
+     font-style: bold;
+  }
+
+.button {
+  background-color: grey; /* Grey */
+  border: none;
+  color: #a3a3a3;
+  padding: 0px 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  text-decoration: none;
+  height: 30px;
+  display: inline-block;
+  font-size: 11px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.button {
+  background-color: #171924; 
+  color: #a3a3a3; 
+  border: 0px solid #4CAF50;
+}
+
+.button:hover {
+  background-color: #212530;
+  color: white;
+}
+
+.btn {
+  border: none;
+  outline: none;
+  padding: 12px 16px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #ddd;
+}
+
+
+.btn.active {
+  background-color: #666;
+  color: white;
+}
+
+.btn2 {
+  border: none;
+  border-radius: 50%;
+  outline: none;
+  padding: 8px 7px;
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+
+.btn2:hover {
+  background-color: #212530;
+  color: white;
+}
+
+.btn2.active {
+  background-color: #666;
+  color: white;
+}
+
+
+/* unvisited link */
+a:link {
+  color: white;
+  text-decoration:none;
+}
+
+/* visited link */
+a:visited {
+  color: white;
+  text-decoration:none;
+}
+
+/* mouse over link */
+a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* selected link */
+a:active {
+  color: cyan;
+  text-decoration: underline;
+}
+
+
+  </style>
+
+<body>
+
+<h2><a href="news01-alltickers-multi0120.html" style="color:cyan;" >AllTickers</a> | <a href="news01-general-multi0120.html" style="color:white;" >General</a></h2>
+<!--<div id='timeOut' style = "float:right;font-family:helvetica-light;font-size:15px;font-style:light;padding:25px;display:none;"></div>-->
+
+<!---<h1>Crypto Tickers News</h1>--->
+
+<!---<button onclick="daynightToggle()">Day/NightMode</button>--->
+
+<!---<div id="btnContainer"><button class="btn2" style="float:right;" onclick="daynightToggle()"><i class="fa fa-star"></i></button></div><br>--->
+
+
+
+<!---<p>Click on a button to choose list view or grid view.</p><div id="btnContainer"><button class="btn active" onclick="gridView()"><i class="fa fa-th-large"></i> Map</button><button class="btn" onclick="listView()"><i class="fa fa-bars"></i> List</button></div>--->
+
+
+   
+<!------<div id="averagePercentChange" style="display:inline-block;width: 340px; font-family:helvetica; font-size:13px; width: auto; color: #fefefe;"></div><div id="averagerelvol1dChange" style="font-family:helvetica; width:220px; float:right; font-size:13px; color: #fefefe;"></div><br><div id="averageytd2Change" style="display:inline-block; width:300px; font-family:helvetica; font-size:13px; color: #fefefe;"></div><div id="numberData" style="display:inline-block;font-family:helvetica; width: 600px; float:right; font-size:13px; color: #a0a0a0;"></div><br>----->
+
+ <form  autocomplete="off" style="display:none;">
+<span style="width:100%;">
+       <select class='dropdown' id="sortDropdown" name = "sortDropdown" onchange="sortDidChange()" >
+        <option value = "MarketCap" selected >Sort: MarketCap</option>
+        <option value = "Today %"> Sort: Today%</option>
+        <option value = "Year to date %">Sort: YTD%</option>
+        <option value = "Volume1D">Sort: Volume1D</option>
+        <option value = "Volume1H">Sort: Volume1H</option>
+        <option value = "RelativeVolume1D" >Sort: RelativeVolD</option>
+        <option value = "RelativeVolume1H">Sort: RelativeVol1H</option>
+      </select>
+      <select class='dropdown' id="mapDropdown" name = "mapDropdown" onchange="mapDidChange()" >
+        <option class='dropdownitem' value = "Price" selected>Heatmap: Price</option>
+        <option class='dropdownitem' value = "RelVolSolid">Heatmap: Solid</option>
+        <option class='dropdownitem' value = "RelVol1D">Heatmap: RelVol1D</option>
+        <option class='dropdownitem' value = "RelVol1H">Heatmap: Relvol1H</option>
+         </option>
+      </select>
+      <button class="button" button onclick="generateCSV()">Export Crypto Data CSV</button>
+      <a id="link" style="font-family:helvetica;font-size:10px;color:#FFFFFF00;" href="#0">No CSV yet</a>
+  </span> 
+   
+  </form>
+
+ <form  autocomplete="off" style:display:inline-block;>
+<input type="text" id="myInput" style="display:inline-block;width:60%;" onkeyup="searchFunction()" placeholder="Type in name, topic, symbol, keywords etc. to search news ... " title="Type in a name">
+</form>
+
+
+      <br>
+  
+  <!--  Copyright Abxium Inc All Rights Reserved  -->
+
+
+
+  <!--  this was onesymbol (a tile), now it is onenews, a template for a single news story  -->
+  <div id='onenews' class='onenews' style="display: inline-block; width:340px;background-color : black; border-radius:0px; border-style:none; padding: 5px; margin-right:auto; margin-left:auto;margin-bottom: 0px; border-bottom: 0px solid gray;">
+
+      
+
+
+
+<div class="container" style="display:inline-block;overflow:hidden;">
+
+      <a id= 'coinIconlink' target="_blank;" ><img id = 'coinIcon' src="" alt=" " style="width:auto;height:200px;object-fit:cover;overflow:hidden;display:inline-block;margin-left:auto;margin-right:10px;padding:2px;border-radius:0px;opacity:.80;"/></a>
+
+<div class="overlay" style="display:block;overflow:hidden;margin-bottom:20px;">
+<br><br><br><br>
+<div id= 'newstypeOut' class = 'newstypeOut' style = "color:white;font-size:.6em;font-style:bold;display:inline-block;padding:5px; width:auto;"></div> 
+<a id='topiclinksOut' href="" class = 'topiclinksOut' style = "font-size:.7em;font-style:bold;display:inline-block;width:auto;padding:5px;">
+
+<a id= 'namelink' target="_blank;" ><div id = 'nameOut' class = 'nameOut' style = "font-size:1.4em;font-weight:600;font-style:bold;display:block;padding:5px;margin-right:auto;"></div></a> 
+
+
+<a id= 'sectorlink' target="_blank;" ><div id= 'sectorOut' class = 'sectorOut' style = "font-family:courier-bold;font-size:.9em;font-style:bold;display:inline-block;padding:5px; width:auto;margin-left:0px;margin-right:0px;"> </div></a>
+
+
+<div id = 'newsdate2Out' class = 'newsdate2Out' style = "color:white;font-family:helvetica;font-size:.6em;font-style: bold; width:100px;padding:5px;display:inline-block;margin-right:2%;"></div> 
+<div id = 'shareIconOut' class = 'shareIconOut' style = "color:white;font-family:FontAwesome,sans-serif;font-size:.7em;font-style: light; display:inline-block; width:auto;padding:5px;float:right;"></div>
+
+<div id = 'sentimentOut' class = 'sentimentOut' style = "color:white;font-size:.6em;font-weight:400; display:inline-block; width:auto;padding:5px;float:right;"></div>  
+<div id = 'topicsOut' class = 'topicsOut' style = "color:red;font-size:.7em;font-weight:400;font-style: light; display:none; width:100%;padding:5px;"></div>
+
+
+  
+<a id= 'tickerlink' target="_blank;" > <div id = 'tickersOut' class = 'tickersOut' style = "color:#00d9f2;font-family:helvetica;font-size:.8em;font-style:light;display:none;text-align:center;padding:5px;margin-left:auto;margin-right:auto;"></div></a>
+
+
+<a id='tickerlinksOut' href="" class = 'tickerlinksOut' style = "color:#00d9f2;font-size:.9em;font-style:bold;display:block;width:auto;text-align:left;padding:5px;margin-left:auto;margin-right:auto;">
+
+
+
+
+
+</div>
+
+</div>
+
+
+
+     
+ 
+
+<div id = 'newsdateOut' class = 'newsdateOut' style = "color:white;font-family:helvetica;font-size:.3em;font-style: light; width:35%;padding:5px;display:none;margin-left:auto;margin-right:5%;float:right;"></div> 
+
+<div id = 'copyIconOut' class = 'copyIconOut' style = "color:white;font-family:FontAwesome,sans-serif;font-size:.7em;font-style: light; display:none; width:auto;padding:5px;margin-left:10px;margin-right:5%;"></div>
+<img  src="https://coinicon.s3.us-west-1.amazonaws.com/paperclip2.png" alt=" " style="width:auto;height:20px;padding:10px;display:none;"/><img  src="https://coinicon.s3.us-west-1.amazonaws.com/shareicon2.png" alt=" " style="width:auto;height:20px;padding:10px;display:none;"/>
+<a id= 'descriptionlink' ><div id= 'descriptionOut' class = 'descriptionOut' style = "font-family:roboto;font-size:12px;font-style:light;display:none;width:89%;color:white;padding:15px;margin-left:auto;margin-right:auto;"></div></a>
+
+
+
+
+
+
+
+    
+<div id = 'symOut' class = 'symOut' style = "font-family:helvetica;font-size:10px;font-style: light; display:none; width:88%;color:white;padding:5px;margin-left:1%;"> </div>
+  
+  
+
+
+   
+ 
+ 
+
+
+
+
+ <a id= 'urlOut' class = 'urlOut' style = "font-family:helvetica;font-size:12px;font-style:bold;display:none;width:85%;color:#58667e;padding:5px;"></a></div>  
+     
+      <div id = 'priceOut' class = 'priceOut' style = "font-family:roboto-bold;font-size:17px;font-style:bold;display:none;width:10px;color:#fefefe; animation-duration:3s;"></div>
+      <div id = 'percentOut' class = 'percentOut' style = "font-family:helvetica;font-size:15px;font-style:light;display:none;width:2px;color:#fefefe;">
+       
+      </div>
+      <div id = 'changeOut' class = 'changeOut' style = "font-family:helvetica;font-size:15px;font-style:bold;display:none;width:20px;color:#fefefe;">
+       
+      </div>
+      <div id = 'open24Out' class = 'open24Out' style = "font-family:helvetica;font-size:8px;font-style:bold;display:none;width:1px;color:#a0a0a0;">
+     
+      </div>
+
+
+  
+ 
+ 
+ 
+    
+      <div id= 'abxOut' class = 'abxOut' style = "font-family:helvetica;font-size:7px;font-style:bold;display:none;width:10px;color:white;">
+      </div>
+     <div id = 'totalvolOut' class = 'totalvolOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:1px;color:white;">
+      
+      </div>
+      <div id = 'volOut' class = 'volOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:1px;color:white;">
+      
+      </div>
+     <div id = 'relvol1dlabelOut' class = 'relvol1dlabelOut' style = "font-family:helvetica-bold;font-size:11px;font-style:bold;display:none;width:1px;color:#FF00FF;">
+
+      </div>
+  
+      <div id = 'relvol1dOut' class = 'relvol1dOut' style = "font-family:helvetica-bold;font-size:11px;font-style:bold;display:none;width:5px;color:#FF00FF;">
+      
+      </div>
+
+     
+      <div id = 'mktcapOut' class = 'mktcapOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:12px;color:white;">
+      
+      </div>
+      <div id = 'vol1hOut' class = 'vol1hOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:10px;color:#a0a0a0;">
+      
+      </div>
+     <div id = 'relvol1hlabelOut' class = 'relvol1hlabelOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:4px;color:#9370db;">
+
+      </div>
+      <div id = 'relvol1hOut' class = 'relvol1hOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:5px;color:#9370db;">
+     
+      </div>
+
+    
+      <div id = 'ytdlabelOut' class = 'ytdlabelOut' style = "font-family:helvetica;font-size:13px;font-style:bold;display:none;width:2px;color:#fefefe;">
+ 
+      </div>
+      <div id = 'ytd2Out' class = 'ytd2Out' style = "font-family:helvetica;font-size:13px;font-style:bold;display:none;width:9px;color:#fefefe;">
+       
+      </div>
+      <div id = 'ytdchangeOut' class = 'ytdchangeOut' style = "font-family:helvetica;font-size:11px;font-style:bold;display:none;width:19px;color:#fefefe;">
+        
+      </div>
+      <div id = 'tradelinkOut' class = 'tradelinkOut' style = "font-family:helvetica;font-size:13px;font-style:bold;display:none;width:1px;color:#fefefe;">
+      </div><a id='moreOut' href="" class = 'moreOut' style = "font-family:helvetica;font-size:14px;font-style:bold;display:none;width:20px;color:#33c4f5"><a id='tradelink2Out' href="" class = 'tradelink2Out' style = "font-family:helvetica;font-size:14px;font-style:bold;display:none;width:20px;color:#33c4f5">
+      </div>
+
+ 
+
+
+</body>
+
+
+<script>
+
+function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}
+
+
+ function updateClock() {
+   var timeElement = document.getElementById('timeOut');
+   var time = new Date();
+   timeElement.innerHTML = time.toLocaleString();
+
+  }
+
+function daynightToggle() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+ }
+
+function findGetParameter(parameterName) {
+  var result = null,
+  tmp = [];
+  location.search.
+  substr(1).
+  split("&").
+  forEach(function (item) {
+    tmp = item.split("=");
+    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+  });
+  return result;
+}
+
+
+
+
+  function generateCSV() {
+    console.log("generate csv")
+
+    var allSymbols = window.allSymbols
+
+    var allTilesUnsorted = []
+
+    // start with header row dont forget return character at end
+    let allrows = 'Symbol,Name,Sector,MarketCap,Volume,RelVol1D,RelVol1H,Price,Today1D,YTD,Description,Url,NewsChart,TradeLink\n'
+
+    for (var i = 0; i < allSymbols.length; i++) {
+
+      var e = document.getElementById("onenews" + i.toString())
+
+      var Symbol = e.querySelector("#symOut").innerHTML
+      var Name = e.querySelector("#nameOut").innerHTML
+      var Sector = e.querySelector("#sectorOut").innerHTML
+      var MarketCap = e.querySelector("#mktcapOut").rawFloat
+      var Volume = e.querySelector("#totalvolOut").rawFloat
+      var RelVol1D = e.querySelector("#relvol1dOut").innerHTML
+      var RelVol1H = e.querySelector("#relvol1hOut").innerHTML
+      var Price = e.querySelector("#priceOut").innerHTML
+      var Today1D = e.querySelector("#percentOut").innerHTML // percent change shown with percent
+      var YTD = e.querySelector("#ytd2Out").innerHTML
+      var Description = e.querySelector("#descriptionOut").innerHTML
+      var Url = e.querySelector("#urlOut").innerHTML
+      var NewsChart = e.querySelector("#abxOut").innerHTML
+      var TradeLink = e.querySelector("#tradelinkOut").innerHTML
+      
+
+      // note:  if you want the symbols like $ and % and up / down arrows, you can use .innerHTML 
+      // for raw numbers no decoration symbols use .rawFloat
+      // raw numbers are more useful for statistical analysis
+
+      // each row is output as a formatted string, note the back quotes around it and the ${ } around
+      // variable names
+      var row = `${Symbol},${Name},${Sector},${MarketCap},${Volume},${RelVol1D},${RelVol1H},${Price},${Today1D},${YTD},${Description},${Url},${NewsChart},${TradeLink}\n`
+      allrows = allrows + row
+    }
+
+    // for debugging
+    console.log(allrows)
+
+    var link;
+
+    link = document.getElementById("link")
+    link.href = "data:text/csv," + encodeURIComponent(allrows)
+    link.download = "Abxium-cryptoData.csv"
+    link.target = "_blank"
+    link.textContent = "tap to download Abxium-cryptoData.csv"
+
+    link.click() // trigger download
+
+  }
+
+
+
+
+  function sortTiles(byWhat) {
+
+    var allSymbols = window.allSymbols
+
+    var allTilesUnsorted = []
+
+    for (var i = 0; i < allSymbols.length; i++) {
+
+      var e = document.getElementById("onenews" + i.toString())
+
+      /*
+      var key = e.querySelector("#percentOut").innerHTML // default sort by percent change
+
+      if (byWhat == "Year to date %") // trial year to date % change 
+        key = e.querySelector("#ytd2Out").innerHTML
+      if (byWhat == "MarketCap") // trial mktcap change 
+        key = e.querySelector("#mktcapOut").innerHTML
+      if (byWhat == "Volume1D") // trial 1dvolumechange 
+        key = e.querySelector("#volOut").innerHTML
+      if (byWhat == "Volume1H") // trial 1hvolumechange 
+        key = e.querySelector("#vol1hOut").innerHTML
+      if (byWhat == "RelativeVolume1H") // trial 1hvolumechange 
+        key = e.querySelector("#relvol1hOut").innerHTML
+      if (byWhat == "RelativeVolume1D") // trial 1dvolumechange 
+        key = e.querySelector("#relvol1dOut").innerHTML
+      
+      */
+
+      var key = e.querySelector("#percentOut").rawFloat // default sort by percent change
+
+      if (byWhat == "Year to date %") // trial year to date % change 
+        key = e.querySelector("#ytd2Out").rawFloat
+      if (byWhat == "MarketCap") // trial mktcap change 
+        key = e.querySelector("#mktcapOut").rawFloat
+      if (byWhat == "Volume1D") // trial 1dvolume change 
+        key = e.querySelector("#volOut").rawFloat
+      if (byWhat == "Volume1H") // trial 1hvolume change 
+        key = e.querySelector("#vol1hOut").rawFloat
+      if (byWhat == "RelativeVolume1H") // trial 1hrelvolume change 
+        key = e.querySelector("#relvol1hOut").rawFloat
+      if (byWhat == "RelativeVolume1D") // trial 1dvolume change 
+        key = e.querySelector("#relvol1dOut").rawFloat
+
+      if (false) {
+
+            // get rid of non numeric characters
+            key = key.replace('%', '')
+
+            //key = key.replace(/[^\d.-]/gM, '') // get rid of non numeric except dot this works except now we lose our sign up / down arrow
+      
+            var keysign = 1;
+            
+            if (key.match('▾')) keysign = -1; // doesnt work
+          
+            // the up arrow just in case
+            // ▴
+            
+            key = key.replace(/[^\d.-]/g, '') // get rid of non numeric
+
+            key = keysign * key // re-apply the numeric sign not symbolic
+
+      }
+
+      console.log("key is now " + key)
+
+      //key = key.replace("&#x25B4;", '') // up and down triangles
+      //key = key.replace("&#x25BE;", '')
+
+      allTilesUnsorted.push({"tileElement" : e, "origIndex" : i, "sortKey" : key})
+
+      //var clone = template.cloneNode(true) // clone children also e.g. the numbers and text in the tile
+
+      //clone.className = clone.className + i.toString() // now the main class name will be like onesymbol0, onesymbol1, etc
+
+      //clone.id = clone.id + i.toString()
+
+      //var e = document.getElementById("sortDropdown")
+
+      // document.body.appendChild(clone) // add this child to the main body of the page
+
+    }
+
+    let sortedTiles = allTilesUnsorted.sort(function(a, b){return -(a.sortKey - b.sortKey)})
+
+    console.log("sorted tiles " + JSON.stringify(sortedTiles))
+    
+    for (var i = 0; i < allSymbols.length; i++) { // should move them or do we have to remove them first?
+      document.body.appendChild(sortedTiles[i].tileElement) 
+    }
+  }
+  function sortDidChange(x) { // no X have to get from selector
+      console.log("sort did change x = " + JSON.stringify(x)) // nothing
+      var e = document.getElementById("sortDropdown")
+      window.STSortValue = e.value // store global for now; undefined should do first item in list (winners in our test case)
+      sortTiles(e.value)
+  }
+  function mapDidChange(x) { // no X have to get from selector
+      console.log("map did change x = " + JSON.stringify(x)) // nothing
+      var e = document.getElementById("mapDropdown")
+      window.STMapValue = e.value // store global for now; undefined should do first item in list (winners in our test case)
+      // just trigger a redraw?
+      refreshTiles() 
+  }
+
+
+ function refreshTiles() {
+
+    var allSymbols = window.allSymbols
+
+    for (var i = 0; i < allSymbols.length; i++) {
+      var e = document.getElementById("onenews" + i.toString())
+      if (e.lastMessage)
+        onStreamMessage(e.lastMessage)
+    }
+
+  }
+
+
+
+  // compute and send to display
+  function computeAggregates() { // starting w/ avg % change not weighted by mktcap
+
+    var allSymbols = window.allSymbols
+
+    var sumPercent = 0
+    var sumytd2 = 0
+    var sumrelvol1d = 0
+    var sumSentiment = 0 // this is trying an avg sentiment - not in regular code
+    var ndata = 0
+    for (var i = 0; i < allSymbols.length; i++) {
+      var e = document.getElementById("onenews" + i.toString())
+      var thisAvg = e.querySelector("#percentOut").rawFloat
+      var ytd2Avg = e.querySelector("#ytd2Out").rawFloat
+      var relvol1dAvg = e.querySelector("#relvol1dOut").rawFloat
+      if (typeof thisAvg != 'undefined' && !isNaN(thisAvg)) {
+        sumPercent += parseFloat(thisAvg)
+        sumytd2 += parseFloat(ytd2Avg)
+        sumrelvol1d += parseFloat(relvol1dAvg)
+        console.log("sumPercent is now " + sumPercent + " from thisAvg " + thisAvg)
+        console.log("sumytd2 is now " + sumytd2 + " from ytd2Avg " + ytd2Avg)
+        console.log("sumrelvol1d is now " + sumrelvol1d + " from relvol1dAvg " + relvol1dAvg)
+        ndata += 1
+      }
+    }
+    
+
+    document.getElementById("numberData").innerHTML = "Total Crypto Set: &nbsp;&nbsp;" + ndata
+
+    var avgPercent = (sumPercent/ndata).toFixed(2)
+
+    var avgytd2 = (sumytd2/ndata).toFixed(2)
+
+    var avgrelvol1d = (sumrelvol1d/ndata).toFixed(2)
+
+
+    document.getElementById("averagePercentChange").innerHTML = "Avg 1D Change: " + avgPercent + "%"
+
+   
+    if (avgPercent > 0) {
+      document.getElementById("averagePercentChange").style.color = '#16de94'
+      document.getElementById("averagePercentChange").innerHTML = "Avg 1D Change: " + "+" + avgPercent + "%"
+
+   
+     } else {
+      document.getElementById("averagePercentChange").style.color = '#bf0027'
+      document.getElementById("averagePercentChange").innerHTML = "Avg 1D Change: " + avgPercent + "%"
+
+     }
+
+    document.getElementById("averagerelvol1dChange").innerHTML = "Avg RelVol1D: " + avgrelvol1d + "%"
+
+    if (avgrelvol1d > 1) {
+      document.getElementById("averagerelvol1dChange").style.color = 'magenta'
+      document.getElementById("averagerelvol1dChange").innerHTML = "Avg RelVol1D: " + avgrelvol1d + "%"
+
+   
+     } else {
+      document.getElementById("averagerelvol1dChange").style.color = 'grey'
+      document.getElementById("averagerelvol1dChange").innerHTML = "Avg RelVol1D: " + avgrelvol1d + "%"
+
+     }
+
+
+
+    document.getElementById("averageytd2Change").innerHTML = "Avg YTD Change: " + avgytd2 + "%"
+
+    if (avgytd2 > 0) {
+      document.getElementById("averageytd2Change").style.color = 'lime'
+      document.getElementById("averageytd2Change").innerHTML = "Avg YTD Change:" + "+" + avgytd2 + "%"
+
+   
+     } else {
+      document.getElementById("averageytd2Change").style.color = 'red'
+      document.getElementById("averageytd2Change").innerHTML = "Avg YTD Change: " + avgytd2 + "%"
+
+     }
+
+
+
+
+  }
+
+
+
+
+  // filter tile display to items that include search term in text
+
+function searchFunction() {
+
+  var allSymbols = window.allSymbols
+  var input = document.getElementById("myInput")
+  var filter = input.value.toUpperCase()
+  for (var i = 0; i < allSymbols.length; i++) {
+    var e = document.getElementById("onenews" + i.toString())
+    var d = e.querySelector("#descriptionOut").innerHTML
+    if (d) {
+      txtValue = d.toUpperCase() // d.textContent || d.innerText;
+      if (txtValue.indexOf(filter) > -1) {
+        e.style.display = "inline-block";
+      } else {
+        e.style.display = "none";
+      }
+    }       
+  }
+}
+
+
+
+
+
+
+
+
+  // note: this can be combined w/ symName table below, i will do that separately
+  // or we could pull these from coin market cap rest api possibly (or some other)
+  var imageUrlTable = { 'BTC' : 'https://coinicon.s3.us-west-1.amazonaws.com/BTC.png',
+'ETH' : 'https://coinicon.s3.us-west-1.amazonaws.com/ETH.png',
+'BNB' : 'https://coinicon.s3.us-west-1.amazonaws.com/BNB.png',
+'ADA' : 'https://coinicon.s3.us-west-1.amazonaws.com/ADA.png',
+'DOGE' : 'https://coinicon.s3.us-west-1.amazonaws.com/DOGE.png',
+'XRP' : 'https://coinicon.s3.us-west-1.amazonaws.com/XRP.png',
+'DOT' : 'https://coinicon.s3.us-west-1.amazonaws.com/DOT.png',
+'BCH' : 'https://coinicon.s3.us-west-1.amazonaws.com/BCH.png',
+'LTC' : 'https://coinicon.s3.us-west-1.amazonaws.com/LTC.png',
+'UNI' : 'https://coinicon.s3.us-west-1.amazonaws.com/UNI.png',
+'LINK' : 'https://coinicon.s3.us-west-1.amazonaws.com/LINK.png',
+'SOL' : 'https://coinicon.s3.us-west-1.amazonaws.com/SOL.png',
+'XLM' : 'https://coinicon.s3.us-west-1.amazonaws.com/XLM.png',
+'MATIC' : 'https://coinicon.s3.us-west-1.amazonaws.com/MATIC.png',
+'USDC' : 'https://coinicon.s3.us-west-1.amazonaws.com/USDC.png',
+'VET' : 'https://coinicon.s3.us-west-1.amazonaws.com/VET.png',
+'ETC' : 'https://coinicon.s3.us-west-1.amazonaws.com/ETC.png',
+'THETA' : 'https://coinicon.s3.us-west-1.amazonaws.com/THETA.png',
+'EOS' : 'https://coinicon.s3.us-west-1.amazonaws.com/EOS.png',
+'TRX' : 'https://coinicon.s3.us-west-1.amazonaws.com/TRX.png',
+'AAVE' : 'https://coinicon.s3.us-west-1.amazonaws.com/AAVE.png',
+'BUSD' : 'https://coinicon.s3.us-west-1.amazonaws.com/BUSD.png',
+'WBTC' : 'https://coinicon.s3.us-west-1.amazonaws.com/WBTC.png',
+'FIL' : 'https://coinicon.s3.us-west-1.amazonaws.com/FIL.png',
+'NEO' : 'https://coinicon.s3.us-west-1.amazonaws.com/NEO.png',
+'XMR' : 'https://coinicon.s3.us-west-1.amazonaws.com/XMR.png',
+'LUNA' : 'https://coinicon.s3.us-west-1.amazonaws.com/LUNA.png',
+'BSV' : 'https://coinicon.s3.us-west-1.amazonaws.com/BSV.png',
+'KLAY' : 'https://coinicon.s3.us-west-1.amazonaws.com/KLAY.png',
+'MIOTA' : 'https://coinicon.s3.us-west-1.amazonaws.com/MIOTA.png',
+'XTZ' : 'https://coinicon.s3.us-west-1.amazonaws.com/XTZ.png',
+'KSM' : 'https://coinicon.s3.us-west-1.amazonaws.com/KSM.png',
+'DAI' : 'https://coinicon.s3.us-west-1.amazonaws.com/DAI.png',
+'RUNE' : 'https://coinicon.s3.us-west-1.amazonaws.com/RUNE.png',
+'HT' : 'https://coinicon.s3.us-west-1.amazonaws.com/HT.png',
+'ATOM' : 'https://coinicon.s3.us-west-1.amazonaws.com/ATOM.png',
+'FTT' : 'https://coinicon.s3.us-west-1.amazonaws.com/FTT.png',
+'AVAX' : 'https://coinicon.s3.us-west-1.amazonaws.com/AVAX.png',
+'MKR' : 'https://coinicon.s3.us-west-1.amazonaws.com/MKR.png',
+'CAKE' : 'https://coinicon.s3.us-west-1.amazonaws.com/CAKE.png',
+'ALGO' : 'https://coinicon.s3.us-west-1.amazonaws.com/ALGO.png',
+'CRO' : 'https://coinicon.s3.us-west-1.amazonaws.com/CRO.png',
+'BTT' : 'https://coinicon.s3.us-west-1.amazonaws.com/BTT.png',
+'COMP' : 'https://coinicon.s3.us-west-1.amazonaws.com/COMP.png',
+'DASH' : 'https://coinicon.s3.us-west-1.amazonaws.com/DASH.png',
+'ZEC' : 'https://coinicon.s3.us-west-1.amazonaws.com/ZEC.png',
+'WAVES' : 'https://coinicon.s3.us-west-1.amazonaws.com/WAVES.png',
+'HBAR' : 'https://coinicon.s3.us-west-1.amazonaws.com/HBAR.png',
+'SUSHI' : 'https://coinicon.s3.us-west-1.amazonaws.com/SUSHI.png',
+'SNX' : 'https://coinicon.s3.us-west-1.amazonaws.com/SNX.png',
+'LEO' : 'https://coinicon.s3.us-west-1.amazonaws.com/LEO.png',
+'YFI' : 'https://coinicon.s3.us-west-1.amazonaws.com/YFI.png',
+'XEM' : 'https://coinicon.s3.us-west-1.amazonaws.com/XEM.png',
+'EGLD' : 'https://coinicon.s3.us-west-1.amazonaws.com/EGLD.png',
+'CHZ' : 'https://coinicon.s3.us-west-1.amazonaws.com/CHZ.png',
+'DCR' : 'https://coinicon.s3.us-west-1.amazonaws.com/DCR.png',
+'REV' : 'https://coinicon.s3.us-west-1.amazonaws.com/REV.png',
+'TEL' : 'https://coinicon.s3.us-west-1.amazonaws.com/TEL.png',
+'NEAR' : 'https://coinicon.s3.us-west-1.amazonaws.com/NEAR.png',
+'UST' : 'https://coinicon.s3.us-west-1.amazonaws.com/UST.png',
+'ZIL' : 'https://coinicon.s3.us-west-1.amazonaws.com/ZIL.png',
+'HOT' : 'https://coinicon.s3.us-west-1.amazonaws.com/HOT.png',
+'MANA' : 'https://coinicon.s3.us-west-1.amazonaws.com/MANA.png',
+'QTUM' : 'https://coinicon.s3.us-west-1.amazonaws.com/QTUM.png',
+'TFUEL' : 'https://coinicon.s3.us-west-1.amazonaws.com/TFUEL.png',
+'FTM' : 'https://coinicon.s3.us-west-1.amazonaws.com/FTM.png',
+'NEXO' : 'https://coinicon.s3.us-west-1.amazonaws.com/NEXO.png',
+'CEL' : 'https://coinicon.s3.us-west-1.amazonaws.com/CEL.png',
+'ONE' : 'https://coinicon.s3.us-west-1.amazonaws.com/ONE.png',
+'BAT' : 'https://coinicon.s3.us-west-1.amazonaws.com/BAT.png',
+'OKB' : 'https://coinicon.s3.us-west-1.amazonaws.com/OKB.png',
+'ENJ' : 'https://coinicon.s3.us-west-1.amazonaws.com/ENJ.png',
+'DGB' : 'https://coinicon.s3.us-west-1.amazonaws.com/DGB.png',
+'BTG' : 'https://coinicon.s3.us-west-1.amazonaws.com/BTG.png',
+'STX' : 'https://coinicon.s3.us-west-1.amazonaws.com/STX.png',
+'ONT' : 'https://coinicon.s3.us-west-1.amazonaws.com/ONT.png',
+'GRT' : 'https://coinicon.s3.us-west-1.amazonaws.com/GRT.png',
+'UMA' : 'https://coinicon.s3.us-west-1.amazonaws.com/UMA.png',
+'HNT' : 'https://coinicon.s3.us-west-1.amazonaws.com/HNT.png',
+'ZRX' : 'https://coinicon.s3.us-west-1.amazonaws.com/ZRX.png',
+'NANO' : 'https://coinicon.s3.us-west-1.amazonaws.com/NANO.png',
+'CRV' : 'https://coinicon.s3.us-west-1.amazonaws.com/CRV.png',
+'SC' : 'https://coinicon.s3.us-west-1.amazonaws.com/SC.png',
+'BNT' : 'https://coinicon.s3.us-west-1.amazonaws.com/BNT.png',
+'ZEN' : 'https://coinicon.s3.us-west-1.amazonaws.com/ZEN.png',
+'PAX' : 'https://coinicon.s3.us-west-1.amazonaws.com/PAX.png',
+'OMG' : 'https://coinicon.s3.us-west-1.amazonaws.com/OMG.png',
+'BAKE' : 'https://coinicon.s3.us-west-1.amazonaws.com/BAKE.png',
+'CELO' : 'https://coinicon.s3.us-west-1.amazonaws.com/CELO.png',
+'ICX' : 'https://coinicon.s3.us-west-1.amazonaws.com/ICX.png',
+'RVN' : 'https://coinicon.s3.us-west-1.amazonaws.com/RVN.png',
+'TUSD' : 'https://coinicon.s3.us-west-1.amazonaws.com/TUSD.png',
+'ANKR' : 'https://coinicon.s3.us-west-1.amazonaws.com/ANKR.png',
+'1INCH' : 'https://coinicon.s3.us-west-1.amazonaws.com/1INCH.png',
+'RSR' : 'https://coinicon.s3.us-west-1.amazonaws.com/RSR.png',
+'HUSD' : 'https://coinicon.s3.us-west-1.amazonaws.com/HUSD.png',
+'KCS' : 'https://coinicon.s3.us-west-1.amazonaws.com/KCS.png',
+'XVS' : 'https://coinicon.s3.us-west-1.amazonaws.com/XVS.png',
+'LSK' : 'https://coinicon.s3.us-west-1.amazonaws.com/LSK.png',
+'IOST' : 'https://coinicon.s3.us-west-1.amazonaws.com/IOST.png',
+'AR' : 'https://coinicon.s3.us-west-1.amazonaws.com/AR.png',
+'BCD' : 'https://coinicon.s3.us-west-1.amazonaws.com/BCD.png',
+'REN' : 'https://coinicon.s3.us-west-1.amazonaws.com/REN.png',
+'QNT' : 'https://coinicon.s3.us-west-1.amazonaws.com/QNT.png',
+'XVG' : 'https://coinicon.s3.us-west-1.amazonaws.com/XVG.png',
+'FLOW' : 'https://coinicon.s3.us-west-1.amazonaws.com/FLOW.png',
+'LRC' : 'https://coinicon.s3.us-west-1.amazonaws.com/LRC.png',
+'DENT' : 'https://coinicon.s3.us-west-1.amazonaws.com/DENT.png',
+'CKB' : 'https://coinicon.s3.us-west-1.amazonaws.com/CKB.png',
+'WRX' : 'https://coinicon.s3.us-west-1.amazonaws.com/WRX.png',
+'KNC' : 'https://coinicon.s3.us-west-1.amazonaws.com/KNC.png',
+'RLC' : 'https://coinicon.s3.us-west-1.amazonaws.com/RLC.png',
+'ICP' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/8916.png',
+'XTZ' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/2011.png',
+'AMP' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/6945.png',
+'LPT' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/3640.png',
+'KNC' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1982.png',
+'LRC' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1934.png',
+'STORJ' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1772.png',
+'SKL' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5691.png',
+'RLC' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1637.png',
+'BAND' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/4679.png',
+'OGN' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5117.png',
+'MLN' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1552.png',
+'CVC' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1816.png',
+'OXT' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5026.png',
+'REP' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1104.png',
+'BAL' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5728.png',
+'NMR' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1732.png',
+'CTSI' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5444.png',
+'NU' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/4761.png',
+'NKN' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/2780.png',
+'MIR' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/7857.png',
+'KEEP' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5566.png',
+'BOND' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/7440.png',
+'FORTH' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/9421.png',
+'DNT' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1856.png',
+'TRB' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/4944.png',
+'GTC' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/10052.png',
+'BTG' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/2083.png',
+'DCR' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1168.png',
+'DGB' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/109.png',
+'FLOW' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/4558.png',
+'HBAR' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/4642.png',
+'HNT' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/5665.png',
+'MIOTA' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1720.png',
+'NANO' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1567.png',
+'NEO' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1376.png',
+'SRM' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/6187.png',
+'THETA' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/2416.png',
+'TRX' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png',
+'VET' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/3077.png',
+'XEM' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/873.png',
+'ZIL' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/2469.png',
+'UPT' : 'https://assets.coingecko.com/coins/images/10136/large/yS35aK0t_400x400_%281%29.jpg?1576191179',
+'XCH' : 'https://s2.coinmarketcap.com/static/img/coins/64x64/9258.png',
+  }
+
+
+
+ // lookup table for names 
+  var symName = { 
+'BTC' : 'Bitcoin',
+'ETH' : 'Ethereum',
+'BNB' : 'Binance Coin',
+'SOL' : 'Solana',
+'ADA' : 'Cardano',
+'XRP' : 'XRP',
+'DOT' : 'Polkadot',
+'HEX' : 'HEX',
+'SHIB' : 'Shiba Inu',
+'DOGE' : 'Dogecoin',
+'LUNA' : 'Terra',
+'UNI' : 'Uniswap',
+'LINK' : 'Chainlink',
+'AVAX' : 'Avalanche',
+'WBTC' : 'Wrapped Bitcoin',
+'LTC' : 'Litecoin',
+'MATIC' : 'Polygon',
+'ALGO' : 'Algorand',
+'BCH' : 'Bitcoin Cash',
+'XLM' : 'Stellar',
+'VET' : 'VeChain',
+'AXS' : 'Axie Infinity',
+'ICP' : 'Internet Computer',
+'ATOM' : 'Cosmos',
+'FIL' : 'Filecoin',
+'TRX' : 'TRON',
+'THETA' : 'THETA',
+'FTT' : 'FTX Token',
+'ETC' : 'Ethereum Classic',
+'FTM' : 'Fantom',
+'CRO' : 'Crypto.com Coin',
+'HBAR' : 'Hedera Hashgraph',
+'NEAR' : 'NEAR Protocol',
+'MANA' : 'Decentraland',
+'XTZ' : 'Tezos',
+'EGLD' : 'Elrond',
+'XMR' : 'Monero',
+'GRT' : 'The Graph',
+'KLAY' : 'Klaytn',
+'EOS' : 'EOS',
+'CAKE' : 'PancakeSwap',
+'FLOW' : 'Flow',
+'AAVE' : 'Aave',
+'MIOTA' : 'IOTA',
+'KSM' : 'Kusama',
+'QNT' : 'Quant',
+'NEO' : 'Neo',
+'BSV' : 'Bitcoin SV',
+'CHZ' : 'Chiliz',
+'HNT' : 'Helium',
+'MKR' : 'Maker',
+'WAVES' : 'Waves',
+'BTT' : 'BitTorrent',
+'SAND' : 'The Sandbox',
+'STX' : 'Stacks',
+'ENJ' : 'Enjin Coin',
+
+  }
+
+
+/*
+// override by arguments for changing news symbol with URL
+
+var symArgInput = findGetParameter('sym');
+// var symNameInput = findGetParameter('name');
+
+//if (symArgInput && symArgInput.length > 0 && symNameInput && symNameInput.length > 0) {
+
+if (symArgInput && symArgInput.length > 0) {
+  symName = {};
+  //symName[symArgInput] = symNameInput;
+}
+*/
+
+
+
+ // lookup table for sectors 
+  var sectorName = { 
+'BTC' : 'Currencies',
+'ETH' : 'Smart Contract Platforms',
+'XRP' : 'Currencies',
+'ADA' : 'Smart Contract Platforms',
+'DOGE' : 'Currencies',
+'DOT' : 'Smart Contract Platforms',
+'UNI' : 'Decentralized Exchanges DeFi',
+'LTC' : 'Currencies',
+'BCH' : 'Currencies',
+'LINK' : 'Data Management Web3 DeFI',
+'USDC' : 'Stablecoins',
+'SOL' : 'Smart Contract Platforms',
+'MATIC' : 'Technology Scaling Platform',
+'WBTC' : 'Wrapped Tokens DeFi',
+'ICP' : 'Smart Contract Platforms',
+'ETC' : 'Smart Contract Platforms',
+'XLM' : 'Currencies',
+'DAI' : 'Stablecoins',
+'FIL' : 'Technology File Storage Infrastructure Web3',
+'AAVE' : 'Finance Lending DeFi',
+'EOS' : 'Smart Contract Platforms',
+'ATOM' : 'Smart Contract Platforms',
+'MKR' : 'Finance Lending DeFi',
+'ALGO' : 'Smart Contract Platforms',
+'COMP' : 'Finance Lending DeFi',
+'XTZ' : 'Smart Contract Platforms',
+'AMP' : 'Finance Payment Platform DeFI',
+'GRT' : 'Gaming Media and Entertainment NFTs',
+'DASH' : 'Currencies',
+'ZEC' : 'Currencies',
+'CHZ' : 'Media and Entertainment',
+'SNX' : 'Gaming Media and Entertainment',
+'YFI' : 'Finance DeFI Yield Aggregator Yield Farming',
+'SUSHI' : 'Gaming Media and Entertainment Metaverse',
+'QNT' : 'Gaming Media and Entertainment NFTs',
+'MANA' : 'Gaming Media Entertainment Metaverse NFTs',
+'ENJ' : 'Media Gaming Collectibles NFTs',
+'BAT' : 'Gaming Media and Entertainment',
+'CELO' : 'Finance Payments Smart Contract Platforms',
+'BNT' : 'Gaming Media and Entertainment NFTs',
+'CRV' : 'Gaming Media and Entertainment NFTs',
+'OMG' : 'Gaming Media and Entertainment',
+'UMA' : 'Gaming Media and Entertainment NFTs',
+'ZRX' : 'Gaming Payments ',
+'ANKR' : 'Technology Enterprise Shared Computing',
+'REN' : 'Technology Defi Interoperability',
+'1INCH' : 'Decentralized Exchanges DeFi',
+'LPT' : 'Technology Shared Computing Web3',
+'KNC' : 'Decentralized Exchanges DeFi',
+'LRC' : 'Decentralized Exchanges DeFi',
+'STORJ' : 'Technology File Storage Platform Distributed Computing',
+'SKL' : 'Technololgy Scaling Infrastructure',
+'RLC' : 'Technology Shared Computing',
+'BAND' : 'Data Management Web3 DeFi Oracles',
+'OGN' : 'Technology P2P Marketplace Platform DeFi',
+'MLN' : 'Finance   Privacy',
+'CVC' : 'Identity Services Web3 Solana Ecos',
+'OXT' : 'Data Management Web3',
+'REP' : 'Technology Stablecoins Financial ',
+'BAL' : 'Decentralized Exchanges DeFi',
+'NMR' : 'Finance DeFi AI Research Payments',
+'CTSI' : 'Smart Contract Platforms',
+'NU' : 'Data Management Enterprise Infrastructure',
+'NKN' : 'Technology Smart Contract Platforms Infrastructure',
+'MIR' : 'Finance DeFI Derivatives Synthetics ',
+'KEEP' : 'Technology Interoperability Infrastructure',
+'BOND' : 'Derivatives Financial DeFi Yield Farming',
+'FORTH' : 'Finance DeFi Education',
+'DNT' : 'Technology Application Development',
+'TRB' : 'Data Management Web3 DeFi Oracles Polygon Ecos',
+'GTC' : 'Finance Smart Contract Platforms NFTs',
+'ETH' : 'Smart Contract Platforms',
+'USDT' : 'Stablecoins',
+'BNB' : 'Centralized Exchanges',
+'ADA' : 'Smart Contract Platforms',
+'DOGE' : 'Currencies',
+'XRP' : 'Currencies',
+'DOT' : 'Smart Contract Platforms',
+'UNI' : 'Decentralized Exchanges DeFi',
+'BCH' : 'Currencies',
+'LTC' : 'Currencies',
+'SOL' : 'Smart Contract Platforms',
+'LINK' : 'Data Management Web3 DeFi',
+'THETA' : 'Media Content Platform Video',
+'BUSD' : 'Stablecoins',
+'MATIC' : 'Technology Scaling Platform',
+'USDC' : 'Stablecoins',
+'WBTC' : 'Wrapped Tokens DeFi',
+'VET' : 'Smart Contract Platforms',
+'ICP' : 'Smart Contract Platforms',
+'ETC' : 'Smart Contract Platforms',
+'XLM' : 'Currencies',
+'FIL' : 'File Storage Infrastructure Web3',
+'CUBE' : 'Media Metaverse Polygon Ecos',
+'DAI' : 'Stablecoins',
+'TRX' : 'Smart Contract Platforms',
+'XMR' : 'Currencies',
+'MIR' : 'Finance DeFI Derivatives Synthetics',
+'EOS' : 'Smart Contract Platforms',
+'NIO' : 'Coins',
+'AMP' : 'Finance Payment Platform DeFi',
+'AAVE' : 'Finance Lending DeFi',
+'NEO' : 'Smart Contract Platforms',
+'ALGO' : 'Smart Contract Platforms',
+'TFUEL' : 'Media Content Platform Payments',
+'BSV' : 'Currencies',
+'FTT' : 'Centralized Exchanges',
+'SHIB' : 'Media and Entertainment',
+'CAKE' : 'Decentralized Exchanges DeFi',
+'MIOTA' : 'Medium of Exchange IoT Sharing Economy',
+'MKR' : 'Finance Lending DeFi',
+'KSM' : 'Smart Contract Platforms',
+'COIN' : 'Finance Yield Farming',
+'CRO' : 'Finance Payment Platform DeFI',
+'XTZ' : 'Smart Contract Platforms',
+'ATOM' : 'Smart Contract Platforms',
+'LUNA' : 'Stablecoins',
+'KLAY' : 'Smart Contract Platforms',
+'AVAX' : 'Smart Contract Platforms',
+'LEO' : 'Centralized Exchanges',
+'HT' : 'Centralized Exchanges',
+'BTT' : 'Technology Distributed Computing Web3',
+'FEI' : 'Stablecoins',
+'RUNE' : 'Decentralized Exchanges DeFi',
+'UST' : 'Stablecoins',
+'HBAR' : 'Smart Contract Platforms',
+'CHZ' : 'Media and Entertainment',
+'WAVES' : 'Smart Contract Platforms',
+'DCR' : 'Currencies',
+'DASH' : 'Currencies',
+'CEL' : 'Finance Lending',
+'COMP' : 'Finance Lending DeFi',
+'TEL' : 'Payment Platforms',
+'ZEC' : 'Currencies',
+'EGLD' : 'Smart Contract Platforms',
+'TUSD' : 'Stablecoins',
+'XEM' : 'Smart Contract Platforms',
+'NEAR' : 'Smart Contract Platforms',
+'YFI' : 'Finance DeFI Yield Aggregator Yield Farming',
+'HOT' : 'Technology Application Development',
+'HNT' : 'IoT Enterprise Infrastructure Web3',
+'ZIL' : 'Smart Contract Platforms',
+'ENJ' : 'Media Gaming Collectibles NFTs',
+'MANA' : 'Gaming Media Entertainment Metaverse NFTs',
+'SUSHI' : 'Gaming Media and Entertainment Metaverse',
+'NEXO' : 'Gaming Media Entertainment Metaverse NFTs',
+'STX' : 'Gaming Media and Entertainment NFTs',
+'SNX' : 'Gaming Media and Entertainment',
+'BTG' : 'Gaming Media Entertainment Metaverse',
+'RVN' : 'Gaming Media Entertainment NFTs',
+'BAT' : 'Gaming Media and Entertainment',
+'ZEN' : 'Gaming Media Entertainment Metaverse NFTs',
+'DFI' : 'Gaming Media and Entertainment NFTs',
+'XDCE' : 'Gaming Payments',
+'QNT' : 'Gaming Media and Entertainment NFTs',
+'XWC' : 'Gaming Infrastructure',
+'QTUM' : 'Gaming Media and Entertainment NFTs',
+'FTM' : 'Gaming Media and Entertainment',
+'GRT' : 'Data Management Infrastructure Web3 Polygon Ecos',
+'PAX' : 'Gaming Media and Entertainment',
+'ONE' : 'Gaming Media and Entertainment',
+'NANO' : 'Gaming Media and Entertainment NFTs',
+'BNT' : 'Gaming Media and Entertainment NFTs',
+'OKB' : 'Gaming Media Entertainment NFTs Metaverse',
+'ONT' : 'Gaming Media and Entertainment',
+'CRV' : 'Gaming Media and Entertainment NFTs',
+'DGB' : 'Gaming Media and Entertainment NFTs',
+'SC' : 'Gaming Financial NFTs',
+'ZRX' : 'Gaming Payments ',
+'UMA' : 'Gaming Media and Entertainment NFTs',
+'KCS' : 'Gaming Media and Entertainment NFTs',
+'OMG' : 'Gaming Media and Entertainment',
+'CELO' : 'Derivatives Financial' ,
+'HUSD' : 'Derivatives Financial',
+'ICX' : 'Enterprise BaaS Media Interoperabiliy Platform',
+'CHSB' : 'Finance Staking',
+'RVN' : 'Currencies',
+'1INCH' : 'Decentralized Exchanges DeFi',
+'AR' : 'File Storage Filesharing Distributed Computing',
+'ANKR' : 'Technology Enterprise Shared Computing',
+'ETHOS' : 'Wallets',
+'LPT' : 'Technology Shared Computing Web3',
+'FLOW' : 'Smart Contract Platforms',
+'BCD' : 'Currencies',
+'MIR' : 'Finance Derivatives DeFi',
+'CKB' : 'Smart Contract Platforms',
+'WRX' : 'Centralized Exchanges',
+'XVG' : 'Currencies',
+'IOST' : 'Smart Contract Platforms',
+'FXC' : 'Finance Payment Platform',
+'REN' : 'Technology Defi Interoperability',
+'RSR' : 'Stablecoins DeFi',
+'USDN' : 'Stablecoins',
+'RENBTC' : 'Currencies',
+'KNC' : 'Decentralized Exchanges DeFi',
+'WOO' : 'Decentralized Exchanges DeFi',
+'HEDG' : 'Coins',
+'MINA' : 'Smart Contract Platforms',
+'LSK' : 'Technology Application Development',
+'LRC' : 'Decentralized Exchanges DeFi',
+'OMI' : 'Dao Maker',
+'MAID' : 'Data Management Distributed Computing',
+'DENT' : 'Data Management Services',
+'AXS' : 'Media Gaming Collectibles NFTs',
+'KEEP' : 'Technology Interoperability Infrastructure',
+'XVS' : 'Finance Lending DeFi',
+'VTHO' : 'Smart Contract Platforms',
+'SKL' : 'Technoolgy Scaling Infrastructure',
+'KAVA' : 'Finance Lending DeFi',
+'RLC' : 'Technology Shared Computing',
+'GNT' : 'Technology Shared Computing Web3',
+'CFX' : 'Smart Contract Platforms',
+'OGN' : 'Technology P2P Marketplace Platform DeFi',
+'OCEAN' : 'Data Management AI Filesharing',
+'REEF' : 'Finance Substrate Asset Management',
+'GNO' : 'Finance Prediction Markets DeFi',
+'STORJ' : 'File Storage Platform Distributed Computing',
+'ANT' : 'Technology Enterprise Infrastructure Web3',
+'ABBC' : 'Payment Platforms',
+'BAND' : 'Data Management Web3 DeFi Oracles',
+'SNT' : 'Technology Application Development',
+'WAXP' : 'Collectibles Media NFTs',
+'HBAR' : 'Smart Contract Platforms',
+'SNX' : 'Derivatives DeFi',
+'XEM' : 'Smart Contract Platforms ',
+'DCR' : 'Currencies Privacy',
+'ZIL' : 'Smart Contract Platforms ',
+'BAT' : 'Advertising Web3',
+'DGB' : 'Currencies',
+'HNT' : 'IoT Services Web3',
+'BTG' : 'Currencies',
+'NANO' : 'Currencies',
+'UMA' : 'Derivatives DeFi Polygon Ecos',
+'OMG' : 'Scaling Infrastructure',
+'ZRX' : 'Decentralized Exchanges DeFi',
+'REN' : 'Interoperability DeFi',
+'OXT' : 'Data Management Infrastructure Web3',
+'BAL' : 'Decentralized Exchanges DeFi',
+'BAKE' : 'Decentralized Exchanges DeFi AMM Token',
+'REV' : 'Technology AI Reviews',
+'XCH' : 'Smart Contract Platforms Green',
+'SRM' : 'Decentralized Exchanges DeFi Solana Ecos',
+
+  }
+
+
+
+ // lookup table for dexcriptions 
+  var descriptionName = { 'BTC' : 'Bitcoin uses peer-to-peer technology to operate with no central authority or banks; managing transactions and the issuing of bitcoins is carried out collectively by the network. Although other cryptocurrencies have come before Bitcoin is the first decentralized cryptocurrency - Its reputation has spawned copies and evolution in the space.With the largest variety of markets and the biggest value - having reached a peak of 318 billion USD - Bitcoin is here to stay. As with any new invention there can be improvements or flaws in the initial model however the community and a team of dedicated developers are pushing to overcome any obstacle they come across. It is also the most traded cryptocurrency and one of the main entry points for all the other cryptocurrencies. The price is as unstable as always and it can go up or down by 10%-20% in a single day.Bitcoin is an SHA-256 POW coin with almost 21000000 total minable coins. The block time is 10 minutes. See below for a full range of Bitcoin markets where you can trade US Dollars for Bitcoin crypto to Bitcoin and many other fiat currencies too.Bitcoin Whitepaper PDF - A Peer-to-Peer Electronic Cash SystemBlockchain data provided by: Blockchain (main source) Blockchair (backup)',
+'ETH' : 'Ethereum is a decentralized platform that runs smart contracts: applications that run exactly as programmed without any possibility of downtime censorship fraud or third party interference. In the Ethereum protocol and blockchain there is a price for each operation. The general idea is in order to have things transferred or executed by the network you have to consume or burn Gas. The cryptocurrency is called Ether and is used to pay for computation time and for transaction fees.If you want to earn block rewards from the network you can join the network as a miner. Follow the link for a guide on how to mine Ethereum on a Windows Pc. The much easier but a bit more expensive way is to buy an Ethereum mining contract. Ethereum is how the Internet was supposed to work. As long as you have enough funds to pay for your code to be run by the network your contacts will always be up and running.It was crowdfunded during August 2014 by fans all around the world. It is developed and maintained by ETHDEV with contributions from great minds across the globe. There is also an Ethereum foundation and there are multiple startups working with the Ethereum blockchain.Ethereum is currently on the Homestead stage and all its related software is still considered Beta until the release of the next stage Metropolis. Ethereum Whitepaper - A Next-Generation Smart Contract &amp; Decentralized Application PlatformBlockchain data provided by: Etherchain (Main Source) Blockchair (Backup) and Etherscan (Total Supply only).',
+'BNB' : 'BNB powers the Binance ecosystem and is the native asset of the Binance Chain. BNB is a cryptocurrency created in June 2017 launched during an ICO in July and initially issued as an ERC-20 token. Designed to be used for a fee reduction on the Binance exchange its scope was extended over the years.BNB powers the Binance Chain as its native chain token. For instance it is used to pay fees on the Binance DEX issue new tokens send/cancel orders and transfer assets.BNB is also powering the Binance Smart Chain which is an EVM-compatible network forked from go-ethereum. It supports smart contracts and relies on a new consensus mechanism: Proof-of-Staked Authority (PoSA) consensus (Parlia) which incorporates elements from both Proof of Stake and Proof of Authority. BNB is used for delegated staking on the authority validator leading to staking rewards for users and validators.Besides its on-chain functions BNB has multiple additional use-cases such as fee discounts on multiple exchanges (e.g. Binance.com) payment asset on third-party services and participation rights &amp; transacting currency on Binance Launchpad.At the core of the economics of BNB there is a burn mechanism leading to period reductions in its total supply (~ every three months). From its initial maximum supply of 200 million burns are expected to continue until the supply reaches 100 million.Whitepaper',
+
+  }
+
+  var avgvol7d = { 
+'BTC' : 6764203428,
+'ETH' : 4491432754,
+'USDT' : 13755458784,
+'BNB' : 661643117,
+'ADA' : 570255970,
+'DOGE' : 547686447,
+'XRP' : 443526532,
+'USDC' : 1078759896,
+'DOT' : 433760689,
+'UNI' : 102945930,
+'BCH' : 135266178,
+'LTC' : 307313767,
+'SOL' : 254844100,
+'LINK' : 357460252,
+'THETA' : 309095166,
+'BUSD' : 2618577914,
+'MATIC' : 647568481,
+'WBTC' : 147678661,
+'VET' : 126250799,
+'ICP' : 157031229,
+'ETC' : 159442149,
+'XLM' : 107585871,
+'FIL' : 165684895,
+'CUBE' : 134747,
+'DAI' : 175237915,
+'TRX' : 228918314,
+'XMR' : 78399927,
+'MIR' : 19933909,
+'EOS' : 148971443,
+'NIO' : 215834,
+'AMP' : 14997133,
+'AAVE' : 74452799,
+'NEO' : 39021248,
+'ALGO' : 88388951,
+'TFUEL' : 253143208,
+'BSV' : 24118043,
+'FTT' : 20132681,
+'SHIB' : 227557127,
+'CAKE' : 63855117,
+'MIOTA' : 23415836,
+'MKR' : 30018631,
+'KSM' : 104188100,
+'COIN' : 88000,
+'CRO' : 5243325,
+'XTZ' : 136342097,
+'ATOM' : 101049398,
+'LUNA' : 100066432,
+'KLAY' : 4398730,
+'AVAX' : 46632846,
+'LEO' : 527313,
+'HT' : 22645746,
+'BTT' : 85735100,
+'FEI' : 41054641,
+'RUNE' : 82112049,
+'UST' : 27320896,
+'HBAR' : 100067999,
+'CHZ' : 236849282,
+'WAVES' : 93180659,
+'DCR' : 6449684,
+'REV' : 59000000,
+'DASH' : 48874921,
+'CEL' : 25203874,
+'COMP' : 30689522,
+'TEL' : 817027,
+'ZEC' : 56407186,
+'EGLD' : 28703287,
+'TUSD' : 34187999,
+'XEM' : 18120306,
+'NEAR' : 37234427,
+'YFI' : 39216423,
+'HOT' : 53137584,
+'HNT' : 30589907,
+'ZIL' : 37443315,
+'ENJ' : 57837808,
+'MANA' : 33748330,
+'SUSHI' : 100313052,
+'NEXO' : 3429060,
+'STX' : 6555732,
+'SNX' : 35451022,
+'BTG' : 6727888,
+'R' : 148405,
+'BAT' : 28886889,
+'ZEN' : 20488917,
+'DFI' : 796765,
+'XDCE' : 2183865,
+'QNT' : 4333635,
+'XWC' : 154269,
+'QTUM' : 28688256,
+'FTM' : 116426319,
+'GRT' : 69707957,
+'PAX' : 22958095,
+'ONE' : 29095001,
+'NANO' : 28973635,
+'BNT' : 12610147,
+'OKB' : 107560949,
+'ONT' : 27442863,
+'CRV' : 61311521,
+'DGB' : 22083440,
+'SC' : 51086894,
+'ZRX' : 18123289,
+'UMA' : 25110113,
+'KCS' : 88000,
+'OMG' : 52573451,
+'BAKE' : 14410000,
+'CELO' : 43305877,
+'HUSD' : 35079266,
+'ICX' : 41707840,
+'CHSB' : 124102,
+'RVN' : 18803281,
+'1INCH' : 58747806,
+'AR' : 8365468,
+'ANKR' : 19728236,
+'ETHOS' : 2687470,
+'LPT' : 9827313,
+'FLOW' : 25728587,
+'BCD' : 5853873,
+'MIR' : 242927948,
+'CKB' : 13951391,
+'WRX' : 16256454,
+'XVG' : 18664749,
+'IOST' : 30012022,
+'FXC' : 8800,
+'REN' : 17343609,
+'RSR' : 14586816,
+'USDN' : 88000,
+'RENBTC' : 3739387,
+'KNC' : 32030869,
+'WOO' : 7813123,
+'HEDG' : 88000,
+'MINA' : 7811442,
+'LSK' : 8609183,
+'LRC' : 21700872,
+'OMI' : 88000,
+'MAID' : 30797,
+'DENT' : 18580390,
+'AXS' : 22922344,
+'KEEP' : 25571559,
+'XVS' : 42307429,
+'VTHO' : 13140688,
+'SKL' : 41752464,
+'KAVA' : 59398715,
+'RLC' : 24376297,
+'GNT' : 495234,
+'CFX' : 2559429,
+'OGN' : 25573306,
+'OCEAN' : 20561555,
+'REEF' : 21964896,
+'GNO' : 729214,
+'STORJ' : 13400522,
+'ANT' : 32773283,
+'ABBC' : 7595,
+'BAND' : 23281807,
+'SNT' : 2031501,
+'WAXP' : 1392895,
+'ORN' : 1912406,
+'INJ' : 363361,
+'GRT' : 146589553,
+'UMA' : 30378576,
+'OMG' : 78339174,
+'ZRX' : 34951488,
+'REN' : 17338158,
+'OXT' : 52834985,
+'BAL' : 8400975,
+
+  }
+
+  var mcsupply = { 'BTC' : 18745293,
+'ETH' : 116506119,
+'BNB' : 153432897,
+'ADA' : 31946328269,
+'DOGE' : 130248000730,
+'XRP' : 46146927647,
+'DOT' : 956283485,
+'BCH' : 18777663,
+'LTC' : 66752415,
+'UNI' : 575244185,
+'LINK' : 435509554,
+'SOL' : 272637428,
+'XLM' : 23207246054,
+'MATIC' : 6303422325,
+'USDC' : 25148402178,
+'VET' : 64315576989,
+'ETC' : 116313299,
+'THETA' : 1000000000,
+'EOS' : 954785393,
+'TRX' : 71659657369,
+'AAVE' : 12828751,
+'BUSD' : 10109425905,
+'WBTC' : 194625,
+'FIL' : 83680397,
+'NEO' : 70538831,
+'XMR' : 17942999,
+'LUNA' : 417947469,
+'BSV' : 18774583,
+'KLAY' : 2481580243,
+'MIOTA' : 2779530283,
+'XTZ' : 850992613,
+'KSM' : 8470098,
+'DAI' : 5387438893,
+'RUNE' : 234117800,
+'HT' : 170704593,
+'ATOM' : 217406890,
+'FTT' : 94346958,
+'AVAX' : 172418164,
+'MKR' : 991351,
+'CAKE' : 188770903,
+'ALGO' : 3097327614,
+'CRO' : 25263013692,
+'BTT' : 659952625000,
+'COMP' : 5319815,
+'DASH' : 10209720,
+'ZEC' : 12106075,
+'WAVES' : 105509926,
+'HBAR' : 8797674289,
+'SUSHI' : 127244443,
+'SNX' : 114841533,
+'LEO' : 953954130,
+'YFI' : 36635,
+'XEM' : 8999999999,
+'EGLD' : 17708987,
+'CHZ' : 5893953727,
+'DCR' : 13072981,
+'REV' : 85061485690,
+'TEL' : 54157110195,
+'NEAR' : 411492991,
+'UST' : 1906276583,
+'ZIL' : 11434605347,
+'HOT' : 172673864848,
+'MANA' : 1580337521,
+'QTUM' : 98492456,
+'TFUEL' : 5301214400,
+'FTM' : 2545006273,
+'NEXO' : 560000011,
+'CEL' : 238863520,
+'ONE' : 10300757406,
+'BAT' : 1497678376,
+'OKB' : 60000000,
+'ENJ' : 834331121,
+'DGB' : 14447733386,
+'BTG' : 17513924,
+'STX' : 1152871005,
+'ONT' : 870088540,
+'GRT' : 2897903422,
+'UMA' : 61671045,
+'HNT' : 88314106,
+'ZRX' : 845323731,
+'NANO' : 133248297,
+'CRV' : 377631617,
+'SC' : 48125962992,
+'BNT' : 222297243,
+'ZEN' : 11248600,
+'PAX' : 836679422,
+'OMG' : 140245398,
+'BAKE' : 260512849,
+'CELO' : 245729966,
+'ICX' : 637698867,
+'RVN' : 9106245000,
+'TUSD' : 1502061636,
+'ANKR' : 6996232711,
+'1INCH' : 172801864,
+'RSR' : 13159999000,
+'HUSD' : 560292762,
+'KCS' : 80118638,
+'XVS' : 10282356,
+'LSK' : 128449678,
+'IOST' : 16454275775,
+'AR' : 33394701,
+'BCD' : 186492898,
+'REN' : 997763051,
+'QNT' : 12072738,
+'XVG' : 16463445344,
+'FLOW' : 42429369,
+'LRC' : 1225574300,
+'DENT' : 98610710274,
+'CKB' : 26870057571,
+'WRX' : 293763596,
+'KNC' : 205045092,
+'RLC' : 80070793,
+
+  }
+
+
+  var ytdTable = { 'BTC' : 29146.0449,
+'ETH' : 728.9018,
+'BNB' : 37.6227,
+'ADA' : 0.1738,
+'DOGE' : 0.0056,
+'XRP' : 0.2408,
+'DOT' : 8.2417,
+'BCH' : 339.7619,
+'ICP' : 518.5724,
+'LTC' : 125.5262,
+'UNI' : 4.7532,
+'LINK' : 11.9096,
+'SOL' : 1.8491,
+'XLM' : 0.132,
+'MATIC' : 0.0176,
+'USDC' : 0.999,
+'VET' : 0.019,
+'ETC' : 5.6361,
+'THETA' : 1.9575,
+'EOS' : 2.6308,
+'TRX' : 0.0268,
+'AAVE' : 91.7618,
+'BUSD' : 1.0008,
+'WBTC' : 29421.8241,
+'FIL' : 22.3371,
+'NEO' : 14.4971,
+'XMR' : 135.7145,
+'LUNA' : 0.6493,
+'BSV' : 161.7361,
+'KLAY' : 0.49,
+'MIOTA' : 0.2897,
+'XTZ' : 2.0214,
+'KSM' : 69.3361,
+'DAI' : 1.0045,
+'RUNE' : 1.322,
+'HT' : 5.1559,
+'ATOM' : 5.8905,
+'FTT' : 5.8234,
+'AVAX' : 3.7584,
+'MKR' : 583.793,
+'CAKE' : 0.5734,
+'ALGO' : 0.3989,
+'CRO' : 0.0593,
+'BTT' : 0.0003,
+'COMP' : 144.8792,
+'DASH' : 88.7398,
+'ZEC' : 57.9237,
+'WAVES' : 5.9965,
+'HBAR' : 0.0321,
+'SUSHI' : 3.3838,
+'SNX' : 8.3949,
+'LEO' : 1.393,
+'YFI' : 21758.1464,
+'XEM' : 0.222,
+'EGLD' : 147.3549,
+'CHZ' : 0.0209,
+'DCR' : 41.0225,
+'REV' : 0.01,
+'TEL' : 0.0002,
+'NEAR' : 1.3767,
+'UST' : 1.0233,
+'ZIL' : 0.0787,
+'HOT' : 0.0007,
+'MANA' : 0.0843,
+'QTUM' : 2.2644,
+'TFUEL' : 0.0334,
+'FTM' : 0.0187,
+'NEXO' : 0.5811,
+'CEL' : 5.4501,
+'ONE' : 0.0041,
+'BAT' : 0.2047,
+'OKB' : 9.2679,
+'ENJ' : 0.1367,
+'DGB' : 0.0263,
+'BTG' : 8.3574,
+'STX' : 0.4306,
+'ONT' : 0.4486,
+'GRT' : 0.3633,
+'UMA' : 7.9214,
+'HNT' : 1.3671,
+'ZRX' : 0.3811,
+'NANO' : 1.0252,
+'CRV' : 0.6147,
+'SC' : 0.0034,
+'BNT' : 1.2945,
+'ZEN' : 11.8216,
+'PAX' : 0.9964,
+'OMG' : 2.5453,
+'BAKE' : 0.02,
+'CELO' : 1.4453,
+'ICX' : 0.4526,
+'RVN' : 0.013,
+'TUSD' : 0.9977,
+'ANKR' : 0.0093,
+'1INCH' : 1.1381,
+'RSR' : 0.0251,
+'HUSD' : 0.9991,
+'KCS' : 0.6946,
+'XVS' : 3.597,
+'LSK' : 1.1809,
+'IOST' : 0.0058,
+'AR' : 2.6671,
+'BCD' : 0.4713,
+'REN' : 0.3189,
+'VGX' : 0.16,
+'QNT' : 11.3134,
+'XVG' : 0.0073,
+'FLOW' : 7.1219,
+'LRC' : 0.1755,
+'LPT' : 1.4079,
+'BTCST' : 48.58,
+'DENT' : 0.0002,
+'CKB' : 0.0045,
+'WRX' : 0.0663,
+'ERG' : 0.57,
+'KNC' : 0.8226,
+'RLC' : 0.7411,
+'OXT' : 0.2325,
+'BAL' : 14.0762,
+
+  }
+
+ 
+  var urlTable = { 
+'BTC' : 'https://bitcoin.org/',
+'LTC' : 'https://litecoin.org/',
+'XRP' : 'https://xrpl.org/',
+'DOGE' : 'http://dogecoin.com/',
+'DGB' : 'https://digibyte.org/',
+'DASH' : 'https://www.dash.org/',
+'XMR' : 'https://www.getmonero.org/',
+'XLM' : 'https://www.stellar.org',
+'XVG' : 'http://vergecurrency.com/',
+'USDT' : 'https://tether.to',
+'XEM' : 'http://nem.io',
+'ETH' : 'https://www.ethereum.org/',
+'SC' : 'https://sia.tech/',
+'DCR' : 'https://www.decred.org/',
+'LSK' : 'https://lisk.com/',
+'WAVES' : 'https://waves.tech/',
+'ETC' : 'https://ethereumclassic.org/',
+'NEO' : 'https://neo.org/',
+'ZEC' : 'https://z.cash/',
+'MKR' : 'https://makerdao.com/',
+'NANO' : 'http://nano.org/en',
+'RLC' : 'https://iex.ec/',
+'QTUM' : 'https://qtum.org/',
+'BAT' : 'https://basicattentiontoken.org/',
+'ZEN' : 'https://horizen.global/',
+'MIOTA' : 'https://www.iota.org/',
+'BNT' : 'https://bancor.network/',
+'EOS' : 'https://eos.io/',
+'OMG' : 'https://omg.network/',
+'BCH' : 'http://bch.info',
+'BNB' : 'https://www.binance.com/',
+'DENT' : 'https://www.dentwireless.com/',
+'ZRX' : 'https://0x.org/',
+'LRC' : 'https://loopring.org',
+'TRX' : 'https://tron.network/',
+'MANA' : 'https://decentraland.org/',
+'LINK' : 'https://chain.link/',
+'KNC' : 'https://kyber.network/',
+'ADA' : 'https://www.cardano.org',
+'XTZ' : 'https://www.tezos.com/',
+'BTG' : 'https://bitcoingold.org/',
+'KCS' : 'https://www.kucoin.com/',
+'ICX' : 'https://iconrepublic.org/',
+'ENJ' : 'https://enjin.io/',
+'REV' : 'https://revain.org/',
+'BCD' : 'https://www.bitcoindiamond.org/',
+'FIL' : 'https://filecoin.io/',
+'TEL' : 'https://www.telco.in/',
+'IOST' : 'http://iost.io/',
+'THETA' : 'https://www.thetatoken.org/',
+'ZIL' : 'https://www.zilliqa.com/',
+'HT' : 'https://www.hbg.com/',
+'REN' : 'https://renproject.io/',
+'TUSD' : 'https://www.trueusd.com/',
+'ONT' : 'https://ont.io/',
+'RVN' : 'https://ravencoin.org/',
+'SNX' : 'https://www.synthetix.io/',
+'HOT' : 'https://holochain.org/',
+'NEXO' : 'http://nexo.io',
+'CEL' : 'https://celsius.network/',
+'VET' : 'https://www.vechain.org/',
+'QNT' : 'https://quant.network/',
+'PAX' : 'https://paxos.com/standard',
+'USDC' : 'https://www.centre.io/usdc',
+'FTM' : 'https://fantom.foundation/',
+'BSV' : 'https://bitcoinsv.com/',
+'CRO' : 'https://www.crypto.com/en/chain',
+'WBTC' : 'https://wbtc.network',
+'BTT' : 'https://www.bittorrent.com/btt/',
+'ANKR' : 'https://www.ankr.com/',
+'ATOM' : 'https://cosmos.network/',
+'TFUEL' : 'https://www.thetatoken.org',
+'MATIC' : 'https://polygon.technology/',
+'OKB' : 'https://www.okex.com/',
+'ONE' : 'https://www.harmony.one/',
+'LEO' : 'https://www.bitfinex.com/',
+'RSR' : 'https://reserve.org/',
+'ALGO' : 'http://algorand.foundation',
+'CHZ' : 'https://www.chiliz.com/',
+'RUNE' : 'https://thorchain.org/',
+'LUNA' : 'https://terra.money/',
+'FTT' : 'https://ftx.com/',
+'KLAY' : 'https://www.klaytn.com/',
+'FLOW' : 'https://www.onflow.org/',
+'HBAR' : 'https://www.hedera.com/',
+'BUSD' : 'https://www.binance.com/en/busd',
+'HUSD' : 'http://www.stcoins.com/',
+'STX' : 'https://stacks.co',
+'DAI' : 'http://www.makerdao.com/',
+'CKB' : 'http://nervos.org/',
+'KSM' : 'https://kusama.network/',
+'WRX' : 'https://wazirx.com/',
+'SOL' : 'https://solana.com',
+'CELO' : 'https://celo.org/',
+'UMA' : 'https://umaproject.org/',
+'AR' : 'https://www.arweave.org',
+'HNT' : 'https://www.helium.com/',
+'COMP' : 'https://compound.finance/governance/comp',
+'AVAX' : 'https://avax.network/',
+'YFI' : 'https://yearn.finance/',
+'NEAR' : 'https://near.org/',
+'CRV' : 'https://guides.curve.fi/everything-you-need-to-know-about-crv/',
+'DOT' : 'https://polkadot.network/',
+'GRT' : 'https://thegraph.com',
+'SUSHI' : 'https://sushi.com/',
+'EGLD' : 'https://elrond.com/',
+'BAKE' : 'https://www.bakeryswap.org/',
+'UNI' : 'https://uniswap.org/blog/uni/',
+'UST' : 'https://terra.money',
+'CAKE' : 'https://pancakeswap.finance/',
+'AAVE' : 'https://aave.com/',
+'XVS' : 'https://venus.io/',
+'1INCH' : 'https://1inch.io/',
+
+
+ }
+
+
+var tradeTable = { 'BTC' : 'https://www.coinbase.com/price/bitcoin',	
+'XRP' : 'https://uphold.com/en-us/assets/crypto/buy-xrp',
+'ADA' : 'https://uphold.com/en-us/assets/crypto/buy-ada',
+'DOGE' : 'https://uphold.com/en-us/assets/crypto/buy-doge',
+'DOT' : 'https://uphold.com/en-us/assets/crypto/buy-dot',
+'LTC' : 'https://uphold.com/en-us/assets/crypto/buy-ltc',
+'BCH' : 'https://uphold.com/en-us/assets/crypto/buy-bch',
+'LINK' : 'https://uphold.com/en-us/assets/crypto/buy-link',
+'ADA' : 'https://uphold.com/en-us/assets/crypto/buy-cardano',	
+'DOGE' : 'https://uphold.com/en-us/assets/crypto/buy-dogecoin',			
+'LINK' : 'https://uphold.com/en-us/assets/crypto/buy-link',	
+'XLM' : 'https://uphold.com/en-us/assets/crypto/buy-xlm',
+'SOL' : 'https://uphold.com/en-us/assets/crypto/buy-sol',
+'FIL' : 'https://uphold.com/en-us/assets/crypto/buy-fil',
+'TRX' : 'https://uphold.com/en-us/assets/crypto/buy-trx',
+'WBTC' : 'https://uphold.com/en-us/assets/crypto/buy-wbtc',
+'NEO' : 'https://uphold.com/en-us/assets/crypto/buy-neo',
+'EOS' : 'https://uphold.com/en-us/assets/crypto/buy-eos',
+'MIOTA' : 'https://uphold.com/en-us/assets/crypto/buy-miota',
+'AAVE' : 'https://uphold.com/en-us/assets/crypto/buy-aave',
+'ATOM' : 'https://uphold.com/en-us/assets/crypto/buy-atom',
+'MKR' : 'https://uphold.com/en-us/assets/crypto/buy-mkr',
+'XEM' : 'https://uphold.com/en-us/assets/crypto/buy-xem',
+'DASH' : 'https://uphold.com/en-us/assets/crypto/buy-dash',
+'DCR' : 'https://uphold.com/en-us/assets/crypto/buy-dcr',
+'ZIL' : 'https://uphold.com/en-us/assets/crypto/buy-zil',
+'ENJ' : 'https://uphold.com/en-us/assets/crypto/buy-enj',
+'DGB' : 'https://uphold.com/en-us/assets/crypto/buy-dgb',
+'MATIC' : 'https://uphold.com/en-us/assets/crypto/buy-matic',
+'SUSHI' : 'https://uphold.com/en-us/assets/crypto/buy-sushi',
+'BAT' : 'https://uphold.com/en-us/assets/crypto/buy-bat',
+'MANA' : 'https://uphold.com/en-us/assets/crypto/buy-mana',
+'YFI' : 'https://uphold.com/en-us/assets/crypto/buy-yfi',
+'BTG' : 'https://uphold.com/en-us/assets/crypto/buy-btg',
+'ZRX' : 'https://uphold.com/en-us/assets/crypto/buy-zrx',
+'NANO' : 'https://uphold.com/en-us/assets/crypto/buy-nano',
+'OMG' : 'https://uphold.com/en-us/assets/crypto/buy-omg',
+'HNT' : 'https://uphold.com/en-us/assets/crypto/buy-hnt',
+'REN' : 'https://uphold.com/en-us/assets/crypto/buy-ren',
+'BAL' : 'https://uphold.com/en-us/assets/crypto/buy-bal',
+'NMR' : 'https://uphold.com/en-us/assets/crypto/buy-nmr',
+'COMP' : 'https://uphold.com/en-us/assets/crypto/buy-comp',
+'GRT' : 'https://uphold.com/en-us/assets/crypto/buy-grt',
+'ICP' : 'https://uphold.com/en-us/assets/crypto/buy-icp',
+'UNI' : 'https://uphold.com/en-us/assets/crypto/buy-uni',
+'OXT' : 'https://uphold.com/en-us/assets/crypto/buy-oxt',
+'UPT' : 'https://uphold.com/en-us/assets/crypto/buy-upt',
+'BTC0' : 'https://uphold.com/en-us/assets/crypto/buy-btc0',
+'BTC' : 'https://www.coinbase.com/price/bitcoin',
+'ETH' : 'https://www.coinbase.com/price/ethereum',
+'ADA' : 'https://www.coinbase.com/price/cardano',
+'DOGE' : 'https://www.coinbase.com/price/dogecoin',
+'DOT' : 'https://www.coinbase.com/price/polkadot',
+'UNI' : 'https://www.coinbase.com/price/unicorn-token',
+'LTC' : 'https://www.coinbase.com/price/litecoin',
+'BCH' : 'https://www.coinbase.com/price/bitcoin-cash',
+'LINK' : 'https://www.coinbase.com/price/chainlink',
+'USDC' : 'https://www.coinbase.com/price/usd-coin',
+'SOL' : 'https://www.coinbase.com/price/solana',
+'MATIC' : 'https://www.coinbase.com/price/polygon',
+'WBTC' : 'https://www.coinbase.com/price/wrapped-bitcoin',
+'ICP' : 'https://www.coinbase.com/price/internet-computer',
+'ETC' : 'https://www.coinbase.com/price/ethereum-classic',
+'XLM' : 'https://www.coinbase.com/price/stellar',
+'DAI' : 'https://www.coinbase.com/price/dai',
+'FIL' : 'https://www.coinbase.com/price/filecoin',
+'AAVE' : 'https://www.coinbase.com/price/aave',
+'EOS' : 'https://www.coinbase.com/price/eos',
+'ATOM' : 'https://www.coinbase.com/price/cosmos',
+'MKR' : 'https://www.coinbase.com/price/maker',
+'ALGO' : 'https://www.coinbase.com/price/algorand',
+'COMP' : 'https://www.coinbase.com/price/compound',
+'XTZ' : 'https://www.coinbase.com/price/tezos',
+'AMP' : 'https://www.coinbase.com/price/amp',
+'GRT' : 'https://www.coinbase.com/price/the-graph',
+'DASH' : 'https://www.coinbase.com/price/dash',
+'ZEC' : 'https://www.coinbase.com/price/zcash',
+'CHZ' : 'https://www.coinbase.com/price/chiliz',
+'SNX' : 'https://www.coinbase.com/price/synthetix-network-token',
+'YFI' : 'https://www.coinbase.com/price/yearn-finance',
+'SUSHI' : 'https://www.coinbase.com/price/sushiswap',
+'QNT' : 'https://www.coinbase.com/price/quant',
+'MANA' : 'https://www.coinbase.com/price/decentraland',
+'ENJ' : 'https://www.coinbase.com/price/enjincoin',
+'BAT' : 'https://www.coinbase.com/price/basic-attention-token',
+'CGLD' : 'https://www.coinbase.com/price/celo',
+'BNT' : 'https://www.coinbase.com/price/bancor-network-token',
+'CRV' : 'https://www.coinbase.com/price/curve-dao-token',
+'OMG' : 'https://www.coinbase.com/price/omisego',
+'UMA' : 'https://www.coinbase.com/price/uma',
+'ZRX' : 'https://www.coinbase.com/price/0x',
+'ANKR' : 'https://www.coinbase.com/price/ankr',
+'REN' : 'https://www.coinbase.com/price/republic-protocol',
+'1INCH' : 'https://www.coinbase.com/price/1inch',
+'LPT' : 'https://www.coinbase.com/price/livepeer',
+'KNC' : 'https://www.coinbase.com/price/kyber-network',
+'LRC' : 'https://www.coinbase.com/price/loopring',
+'STORJ' : 'https://www.coinbase.com/price/storj',
+'SKL' : 'https://www.coinbase.com/price/skale',
+'RLC' : 'https://www.coinbase.com/price/rlc',
+'BAND' : 'https://www.coinbase.com/price/band-protocol',
+'OGN' : 'https://www.coinbase.com/price/origin-protocol',
+'MLN' : 'https://www.coinbase.com/price/enzyme',
+'CVC' : 'https://www.coinbase.com/price/civic',
+'OXT' : 'https://www.coinbase.com/price/orchid',
+'REP' : 'https://www.coinbase.com/price/augur',
+'BAL' : 'https://www.coinbase.com/price/balancer',
+'NMR' : 'https://www.coinbase.com/price/numeraire',
+'CTSI' : 'https://www.coinbase.com/price/cartesi',
+'NU' : 'https://www.coinbase.com/price/nucypher',
+'NKN' : 'https://www.coinbase.com/price/nkn',
+'MIR' : 'https://www.coinbase.com/price/mirror-protocol',
+'KEEP' : 'https://www.coinbase.com/price/keep-network',
+'BOND' : 'https://www.coinbase.com/price/barnbridge',
+'FORTH' : 'https://www.coinbase.com/price/ampleforth-governance-token',
+'DNT' : 'https://www.coinbase.com/price/district0x',
+'TRB' : 'https://www.coinbase.com/price/tellor',
+'GTC' : 'https://www.coinbase.com/price/gitcoin',
+'UPBTC' : 'https://uphold.com/en-us/assets/crypto/buy-upbtc',
+'UPCO2' : 'https://uphold.com/en-us/assets/crypto/buy-upco2',
+
+
+ }
+
+
+
+var moreTable = { 		
+
+'BTC' : 'https://www.globefi.co/crypto/BTC',
+'ETH' : 'https://www.globefi.co/crypto/ETH',
+'BNB' : 'https://www.globefi.co/crypto/BNB',
+'ADA' : 'https://www.globefi.co/crypto/ADA',
+'XRP' : 'https://www.globefi.co/crypto/XRP',
+'USDC' : 'https://www.globefi.co/crypto/USDC',
+'DOGE' : 'https://www.globefi.co/crypto/DOGE',
+'DOT' : 'https://www.globefi.co/crypto/DOT',
+'BUSD' : 'https://www.globefi.co/crypto/BUSD',
+'UNI' : 'https://www.globefi.co/crypto/UNI',
+'BCH' : 'https://www.globefi.co/crypto/BCH',
+'LTC' : 'https://www.globefi.co/crypto/LTC',
+'LINK' : 'https://www.globefi.co/crypto/LINK',
+'SOL' : 'https://www.globefi.co/crypto/SOL',
+'WBTC' : 'https://www.globefi.co/crypto/WBTC',
+'MATIC' : 'https://www.globefi.co/crypto/MATIC',
+'ETC' : 'https://www.globefi.co/crypto/ETC',
+'XLM' : 'https://www.globefi.co/crypto/XLM',
+'THETA' : 'https://www.globefi.co/crypto/THETA',
+'DAI' : 'https://www.globefi.co/crypto/DAI',
+'ICP' : 'https://www.globefi.co/crypto/ICP',
+'VET' : 'https://www.globefi.co/crypto/VET',
+'FIL' : 'https://www.globefi.co/crypto/FIL',
+'TRX' : 'https://www.globefi.co/crypto/TRX',
+'XMR' : 'https://www.globefi.co/crypto/XMR',
+'LUNA' : 'https://www.globefi.co/crypto/LUNA',
+'AAVE' : 'https://www.globefi.co/crypto/AAVE',
+'EOS' : 'https://www.globefi.co/crypto/EOS',
+'CRO' : 'https://www.globefi.co/crypto/CRO',
+'CAKE' : 'https://www.globefi.co/crypto/CAKE',
+'AXS' : 'https://www.globefi.co/crypto/AXS',
+'AMP' : 'https://www.globefi.co/crypto/AMP',
+'FTT' : 'https://www.globefi.co/crypto/FTT',
+'LEO' : 'https://www.globefi.co/crypto/LEO',
+'ALGO' : 'https://www.globefi.co/crypto/ALGO',
+'GRT' : 'https://www.globefi.co/crypto/GRT',
+'MKR' : 'https://www.globefi.co/crypto/MKR',
+'ATOM' : 'https://www.globefi.co/crypto/ATOM',
+'KLAY' : 'https://www.globefi.co/crypto/KLAY',
+'BSV' : 'https://www.globefi.co/crypto/BSV',
+'SHIB' : 'https://www.globefi.co/crypto/SHIB',
+'MIOTA' : 'https://www.globefi.co/crypto/MIOTA',
+'XTZ' : 'https://www.globefi.co/crypto/XTZ',
+'NEO' : 'https://www.globefi.co/crypto/NEO',
+'COMP' : 'https://www.globefi.co/crypto/COMP',
+'AVAX' : 'https://www.globefi.co/crypto/AVAX',
+'UST' : 'https://www.globefi.co/crypto/UST',
+'HT' : 'https://www.globefi.co/crypto/HT',
+'BTT' : 'https://www.globefi.co/crypto/BTT',
+'HBAR' : 'https://www.globefi.co/crypto/HBAR',
+'TFUEL' : 'https://www.globefi.co/crypto/TFUEL',
+'DCR' : 'https://www.globefi.co/crypto/DCR',
+'EGLD' : 'https://www.globefi.co/crypto/EGLD',
+'WAVES' : 'https://www.globefi.co/crypto/WAVES',
+'KSM' : 'https://www.globefi.co/crypto/KSM',
+'DASH' : 'https://www.globefi.co/crypto/DASH',
+'CHZ' : 'https://www.globefi.co/crypto/CHZ',
+'XEM' : 'https://www.globefi.co/crypto/XEM',
+'CEL' : 'https://www.globefi.co/crypto/CEL',
+'STX' : 'https://www.globefi.co/crypto/STX',
+'ZEC' : 'https://www.globefi.co/crypto/ZEC',
+'TUSD' : 'https://www.globefi.co/crypto/TUSD',
+'MANA' : 'https://www.globefi.co/crypto/MANA',
+'QNT' : 'https://www.globefi.co/crypto/QNT',
+'ENJ' : 'https://www.globefi.co/crypto/ENJ',
+'OKB' : 'https://www.globefi.co/crypto/OKB',
+'YFI' : 'https://www.globefi.co/crypto/YFI',
+'HOT' : 'https://www.globefi.co/crypto/HOT',
+'SNX' : 'https://www.globefi.co/crypto/SNX',
+'HNT' : 'https://www.globefi.co/crypto/HNT',
+'TEL' : 'https://www.globefi.co/crypto/TEL',
+'SUSHI' : 'https://www.globefi.co/crypto/SUSHI',
+'XDC' : 'https://www.globefi.co/crypto/XDC',
+'FLOW' : 'https://www.globefi.co/crypto/FLOW',
+'NEXO' : 'https://www.globefi.co/crypto/NEXO',
+'PAX' : 'https://www.globefi.co/crypto/PAX',
+'RUNE' : 'https://www.globefi.co/crypto/RUNE',
+'NEAR' : 'https://www.globefi.co/crypto/NEAR',
+'ZIL' : 'https://www.globefi.co/crypto/ZIL',
+'BAT' : 'https://www.globefi.co/crypto/BAT',
+'BTG' : 'https://www.globefi.co/crypto/BTG',
+'BNT' : 'https://www.globefi.co/crypto/BNT',
+'ONE' : 'https://www.globefi.co/crypto/ONE',
+'KCS' : 'https://www.globefi.co/crypto/KCS',
+'CELO' : 'https://www.globefi.co/crypto/CELO',
+'QTUM' : 'https://www.globefi.co/crypto/QTUM',
+'DGB' : 'https://www.globefi.co/crypto/DGB',
+'ZEN' : 'https://www.globefi.co/crypto/ZEN',
+'ONT' : 'https://www.globefi.co/crypto/ONT',
+'HUSD' : 'https://www.globefi.co/crypto/HUSD',
+'ZRX' : 'https://www.globefi.co/crypto/ZRX',
+'SC' : 'https://www.globefi.co/crypto/SC',
+'CRV' : 'https://www.globefi.co/crypto/CRV',
+'ANKR' : 'https://www.globefi.co/crypto/ANKR',
+'FTM' : 'https://www.globefi.co/crypto/FTM',
+'RVN' : 'https://www.globefi.co/crypto/RVN',
+'REV' : 'https://www.globefi.co/crypto/REV',
+'ICX' : 'https://www.globefi.co/crypto/ICX',
+'NANO' : 'https://www.globefi.co/crypto/NANO',
+'BAKE' : 'https://www.globefi.co/crypto/BAKE',
+'OMG' : 'https://www.globefi.co/crypto/OMG',
+'UMA' : 'https://www.globefi.co/crypto/UMA',
+'SAND' : 'https://www.globefi.co/crypto/SAND',
+'USDN' : 'https://www.globefi.co/crypto/USDN',
+'IOST' : 'https://www.globefi.co/crypto/IOST',
+'KAVA' : 'https://www.globefi.co/crypto/KAVA',
+'RSR' : 'https://www.globefi.co/crypto/RSR',
+'GLM' : 'https://www.globefi.co/crypto/GLM',
+'BCD' : 'https://www.globefi.co/crypto/BCD',
+'REN' : 'https://www.globefi.co/crypto/REN',
+'LSK' : 'https://www.globefi.co/crypto/LSK',
+'XVG' : 'https://www.globefi.co/crypto/XVG',
+'AR' : 'https://www.globefi.co/crypto/AR',
+'WRX' : 'https://www.globefi.co/crypto/WRX',
+'GUSD' : 'https://www.globefi.co/crypto/GUSD',
+'PAXG' : 'https://www.globefi.co/crypto/PAXG',
+'MAID' : 'https://www.globefi.co/crypto/MAID',
+'REP' : 'https://www.globefi.co/crypto/REP',
+'CKB' : 'https://www.globefi.co/crypto/CKB',
+'KNC' : 'https://www.globefi.co/crypto/KNC',
+'LRC' : 'https://www.globefi.co/crypto/LRC',
+'XVS' : 'https://www.globefi.co/crypto/XVS',
+'SKL' : 'https://www.globefi.co/crypto/SKL',
+'WIN' : 'https://www.globefi.co/crypto/WIN',
+'WAXP' : 'https://www.globefi.co/crypto/WAXP',
+'OCEAN' : 'https://www.globefi.co/crypto/OCEAN',
+'FET' : 'https://www.globefi.co/crypto/FET',
+'STORJ' : 'https://www.globefi.co/crypto/STORJ',
+'GT' : 'https://www.globefi.co/crypto/GT',
+'DENT' : 'https://www.globefi.co/crypto/DENT',
+'OGN' : 'https://www.globefi.co/crypto/OGN',
+'VTHO' : 'https://www.globefi.co/crypto/VTHO',
+'SNT' : 'https://www.globefi.co/crypto/SNT',
+'STRAX' : 'https://www.globefi.co/crypto/STRAX',
+'RLC' : 'https://www.globefi.co/crypto/RLC',
+'ALPHA' : 'https://www.globefi.co/crypto/ALPHA',
+'PROM' : 'https://www.globefi.co/crypto/PROM',
+'NMR' : 'https://www.globefi.co/crypto/NMR',
+'BAND' : 'https://www.globefi.co/crypto/BAND',
+'EWT' : 'https://www.globefi.co/crypto/EWT',
+'ABBC' : 'https://www.globefi.co/crypto/ABBC',
+'SXP' : 'https://www.globefi.co/crypto/SXP',
+'REEF' : 'https://www.globefi.co/crypto/REEF',
+'STMX' : 'https://www.globefi.co/crypto/STMX',
+'OXT' : 'https://www.globefi.co/crypto/OXT',
+'INJ' : 'https://www.globefi.co/crypto/INJ',
+'IOTX' : 'https://www.globefi.co/crypto/IOTX',
+'CVC' : 'https://www.globefi.co/crypto/CVC',
+'ANT' : 'https://www.globefi.co/crypto/ANT',
+'ERG' : 'https://www.globefi.co/crypto/ERG',
+'STEEM' : 'https://www.globefi.co/crypto/STEEM',
+'ARDR' : 'https://www.globefi.co/crypto/ARDR',
+'NKN' : 'https://www.globefi.co/crypto/NKN',
+'FUN' : 'https://www.globefi.co/crypto/FUN',
+'CTSI' : 'https://www.globefi.co/crypto/CTSI',
+'AMPL' : 'https://www.globefi.co/crypto/AMPL',
+'SRM' : 'https://www.globefi.co/crypto/SRM',
+'CELR' : 'https://www.globefi.co/crypto/CELR',
+'ORBS' : 'https://www.globefi.co/crypto/ORBS',
+'CHR' : 'https://www.globefi.co/crypto/CHR',
+'UQC' : 'https://www.globefi.co/crypto/UQC',
+'HIVE' : 'https://www.globefi.co/crypto/HIVE',
+'MCO' : 'https://www.globefi.co/crypto/MCO',
+'BAL' : 'https://www.globefi.co/crypto/BAL',
+'RIF' : 'https://www.globefi.co/crypto/RIF',
+'ZB' : 'https://www.globefi.co/crypto/ZB',
+'PHA' : 'https://www.globefi.co/crypto/PHA',
+'MLN' : 'https://www.globefi.co/crypto/MLN',
+'ARK' : 'https://www.globefi.co/crypto/ARK',
+'BTS' : 'https://www.globefi.co/crypto/BTS',
+'HEX' : 'https://www.globefi.co/crypto/HEX',
+'XWC' : 'https://www.globefi.co/crypto/XWC',
+'AUDIO' : 'https://www.globefi.co/crypto/AUDIO',
+'KEEP' : 'https://www.globefi.co/crypto/KEEP',
+'DYDX' : 'https://www.globefi.co/crypto/DYDX',
+'HXRO' : 'https://www.globefi.co/crypto/HXRO',
+'SUN' : 'https://www.globefi.co/crypto/SUN',
+'DODO' : 'https://www.globefi.co/crypto/DODO',
+'MTL' : 'https://www.globefi.co/crypto/MTL',
+'YFII' : 'https://www.globefi.co/crypto/YFII',
+'JST' : 'https://www.globefi.co/crypto/JST',
+'AVA' : 'https://www.globefi.co/crypto/AVA',
+'UTK' : 'https://www.globefi.co/crypto/UTK',
+'DEGO' : 'https://www.globefi.co/crypto/DEGO',
+'BTM' : 'https://www.globefi.co/crypto/BTM',
+'KMD' : 'https://www.globefi.co/crypto/KMD',
+'RLY' : 'https://www.globefi.co/crypto/RLY',
+'DATA' : 'https://www.globefi.co/crypto/DATA',
+'HNS' : 'https://www.globefi.co/crypto/HNS',
+'TRB' : 'https://www.globefi.co/crypto/TRB',
+'MXC' : 'https://www.globefi.co/crypto/MXC',
+'FIO' : 'https://www.globefi.co/crypto/FIO',
+'BZRX' : 'https://www.globefi.co/crypto/BZRX',
+'DIA' : 'https://www.globefi.co/crypto/DIA',
+'HARD' : 'https://www.globefi.co/crypto/HARD',
+'RARI' : 'https://www.globefi.co/crypto/RARI',
+'VRA' : 'https://www.globefi.co/crypto/VRA',
+'DOCK' : 'https://www.globefi.co/crypto/DOCK',
+'NULS' : 'https://www.globefi.co/crypto/NULS',
+'KEY' : 'https://www.globefi.co/crypto/KEY',
+'FRONT' : 'https://www.globefi.co/crypto/FRONT',
+'USDK' : 'https://www.globefi.co/crypto/USDK',
+'SOC' : 'https://www.globefi.co/crypto/SOC',
+'GTO' : 'https://www.globefi.co/crypto/GTO',
+'DF' : 'https://www.globefi.co/crypto/DF',
+'AKT' : 'https://www.globefi.co/crypto/AKT',
+'ANC' : 'https://www.globefi.co/crypto/ANC',
+'ARRR' : 'https://www.globefi.co/crypto/ARRR',
+'DAG' : 'https://www.globefi.co/crypto/DAG',
+'DFI' : 'https://www.globefi.co/crypto/DFI',
+'ELF' : 'https://www.globefi.co/crypto/ELF',
+'MBOX' : 'https://www.globefi.co/crypto/MBOX',
+'MIR' : 'https://www.globefi.co/crypto/MIR',
+'NXM' : 'https://www.globefi.co/crypto/NXM',
+'OMI' : 'https://www.globefi.co/crypto/OMI',
+'PERP' : 'https://www.globefi.co/crypto/PERP',
+'REQ' : 'https://www.globefi.co/crypto/REQ',
+'ROSE' : 'https://www.globefi.co/crypto/ROSE',
+'SLP' : 'https://www.globefi.co/crypto/SLP',
+'TRIBE' : 'https://www.globefi.co/crypto/TRIBE',
+'TWT' : 'https://www.globefi.co/crypto/TWT',
+'WAN' : 'https://www.globefi.co/crypto/WAN',
+'XCH' : 'https://www.globefi.co/crypto/XCH',
+'BADGER' : 'https://www.globefi.co/crypto/BADGER',
+'COTI' : 'https://www.globefi.co/crypto/COTI',
+'ORN' : 'https://www.globefi.co/crypto/ORN',
+'RAD' : 'https://www.globefi.co/crypto/RAD',
+'TKO' : 'https://www.globefi.co/crypto/TKO',
+'TOMO' : 'https://www.globefi.co/crypto/TOMO',
+'XEC' : 'https://www.globefi.co/crypto/XEC',
+'MINA' : 'https://www.globefi.co/crypto/MINA',
+'POLY' : 'https://www.globefi.co/crypto/POLY',
+'ILV' : 'https://www.globefi.co/crypto/ILV',
+'TRU' : 'https://www.globefi.co/crypto/TRU',
+'MASK' : 'https://www.globefi.co/crypto/MASK',
+'SUPER' : 'https://www.globefi.co/crypto/SUPER',
+'AGLD' : 'https://www.globefi.co/crypto/AGLD',
+'POLS' : 'https://www.globefi.co/crypto/POLS',
+'SYS' : 'https://www.globefi.co/crypto/SYS',
+'STPT' : 'https://www.globefi.co/crypto/STPT',
+'SFP' : 'https://www.globefi.co/crypto/SFP',
+'TROY' : 'https://www.globefi.co/crypto/TROY',
+'GHST' : 'https://www.globefi.co/crypto/GHST',
+'CLV' : 'https://www.globefi.co/crypto/CLV',
+'ARPA' : 'https://www.globefi.co/crypto/ARPA',
+'FORTH' : 'https://www.globefi.co/crypto/FORTH',
+'IRIS' : 'https://www.globefi.co/crypto/IRIS',
+'MFT' : 'https://www.globefi.co/crypto/MFT',
+'ALPACA' : 'https://www.globefi.co/crypto/ALPACA',
+'TVK' : 'https://www.globefi.co/crypto/TVK',
+'AKRO' : 'https://www.globefi.co/crypto/AKRO',
+'CTK' : 'https://www.globefi.co/crypto/CTK',
+'BEL' : 'https://www.globefi.co/crypto/BEL',
+'LTO' : 'https://www.globefi.co/crypto/LTO',
+'FIRO' : 'https://www.globefi.co/crypto/FIRO',
+'DNT' : 'https://www.globefi.co/crypto/DNT',
+'WNXM' : 'https://www.globefi.co/crypto/WNXM',
+'AION' : 'https://www.globefi.co/crypto/AION',
+'OM' : 'https://www.globefi.co/crypto/OM',
+'WTC' : 'https://www.globefi.co/crypto/WTC',
+'FLM' : 'https://www.globefi.co/crypto/FLM',
+'BLZ' : 'https://www.globefi.co/crypto/BLZ',
+'BEAM' : 'https://www.globefi.co/crypto/BEAM',
+'COS' : 'https://www.globefi.co/crypto/COS',
+'BURGER' : 'https://www.globefi.co/crypto/BURGER',
+'MBL' : 'https://www.globefi.co/crypto/MBL',
+'DUSK' : 'https://www.globefi.co/crypto/DUSK',
+'CVP' : 'https://www.globefi.co/crypto/CVP',
+'AUTO' : 'https://www.globefi.co/crypto/AUTO',
+'FOR' : 'https://www.globefi.co/crypto/FOR',
+'UNFI' : 'https://www.globefi.co/crypto/UNFI',
+'VITE' : 'https://www.globefi.co/crypto/VITE',
+'MITH' : 'https://www.globefi.co/crypto/MITH',
+'PNT' : 'https://www.globefi.co/crypto/PNT',
+'PERL' : 'https://www.globefi.co/crypto/PERL',
+'WING' : 'https://www.globefi.co/crypto/WING',
+'CTXC' : 'https://www.globefi.co/crypto/CTXC',
+'COCOS' : 'https://www.globefi.co/crypto/COCOS',
+'TCT' : 'https://www.globefi.co/crypto/TCT',
+'ACM' : 'https://www.globefi.co/crypto/ACM',
+'ATM' : 'https://www.globefi.co/crypto/ATM',
+'DREP' : 'https://www.globefi.co/crypto/DREP',
+'1INCH' : 'https://www.globefi.co/crypto/1INCH'
+
+}
+
+
+
+  let mktcapSymbols = Object.keys(symName) // use symbol list from harcoded mcsupply
+
+  let mktcapDirect = {}
+
+  let priceMultiFull = {} // save these data pulls in case we want anything else out of them
+
+
+  /* objC reference for pulling news
+
+    NSString * token = @"e69kqllysuwepddkwvfjhvarskopsfv0cmmqpfp1";
+    NSString * prefix = @"https://stocknewsapi.com";
+    char symbolPull[10];
+    strcpy(symbolPull, symbol);
+    if (isCrypto) {
+        token = @"axyvzauh6waqanxwuvucmilrdudjoq2eewo7x2zz";
+        prefix = @"https://cryptonews-api.com";
+        int last = strlen(symbolPull) - 1;
+        if (symbolPull[last] == '^')
+          symbolPull[last] = '\0'; // chop of last chr if it is ^
+    } 
+    NSMutableURLRequest * request = 
+    [[NSMutableURLRequest alloc] initWithURL:
+                                        [NSURL URLWithString:
+                                         [NSString stringWithFormat:@"%@/api/v1?tickers=%@&items=40&token=%@",
+                                           prefix, [NSString stringWithUTF8String:symbolPull], token 
+                                          ]
+                                         ]
+                                        ];
+  */
+
+  let oneNewsSymbol = [mktcapSymbols[0]]
+
+  function findGetParameter(parameterName) {
+    var result = null,
+    tmp = [];
+    location.search.
+    substr(1).
+    split("&").
+    forEach(function (item) {
+      tmp = item.split("=");
+      if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+    });
+    return result;
+  }
+
+  oneNewsSymbol.forEach(sym => { // sym needs to be upper case
+
+      // fetch lots of interesting stuff per coin (can batch them later)
+      
+      // price multi full
+      // var urlPmf = 'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=' + sym + '&tsyms=USD&api_key=6754e907a673813903283fa627c08c3935e4e80415973721ed33c0771c467323'
+
+      // news (see above objC) we dont have ^ at end of crypto symbols to worry about and we will ignore stocks for now
+
+      const token = "axyvzauh6waqanxwuvucmilrdudjoq2eewo7x2zz"
+      const prefix = "https://cryptonews-api.com" 
+      
+      var inputSym = findGetParameter('sym')
+
+      var asym = (inputSym && inputSym.length > 0) ? inputSym : 'BTC'  // placeholder for 1 symbol variable asym
+
+     //  var urlPmf = prefix + '/api/v1?tickers=' + asym + '&items=50&sourceexclude=The+Motley+Fool&token=' + token
+      var urlPmf = prefix + '/api/v1/category?section=alltickers&items=50&sourceexclude=The+Motley+Fool&token=' + token
+
+      fetch(urlPmf)
+      .then(response => response.json())
+      .then(data => {
+        //console.log("news pull keys = " + JSON.stringify(Object.keys(data.data)))
+        console.log("news for symbol " + sym)
+        if (data.data) 
+          for (let i = 0; i < data.data.length; i++) {
+            console.log(JSON.stringify(data.data[i], null, 2))
+
+            const article = data.data[i] // data block for 1 article
+
+            var e = document.getElementById("onenews" + i.toString()) // main news block element similar to stock tile
+
+            var Name = e.querySelector("#nameOut") // put news title in name field
+            var Sentiment = e.querySelector("#sentimentOut") // put sentiment in sentiment field
+            var Description = e.querySelector("#descriptionOut") // put news title in name field
+            var Sector = e.querySelector("#sectorOut") // put news source in sector field
+            var Tickers = e.querySelector("#tickersOut") // for tickers news
+            var Url = e.querySelector("#urlOut")
+            var Topics = e.querySelector("#topicsOut") // for tickers news
+            var CoinIcon = e.querySelector("#coinIcon") // repurpose for news pic
+            var Newsdate = e.querySelector("#newsdateOut") // for news date
+            var CoinIconlink = e.querySelector("#coinIconlink") // repurpose for news pic link
+            var Sectorlink = e.querySelector("#sectorlink") // repurpose for source link
+            var Namelink = e.querySelector("#namelink") // repurpose for title pic link
+            var Descriptionlink = e.querySelector("#descriptionlink") // repurpose for title pic link
+            var CopyIcon = e.querySelector("#copyIconOut") // copylink icon
+            var ShareIcon = e.querySelector("#shareIconOut") // share icon
+            var Newsnow = e.querySelector("#newsnowOut") // timestamp2 icon
+            var Newsdate2 = e.querySelector("#newsdate2Out") // timestamp2 icon
+            var Tickerlink = e.querySelector("#tickerlink") // for ticker links
+            var Tickerlinks = e.querySelector("#tickerlinksOut") // for multi ticker links
+            var Topiclinks = e.querySelector("#topiclinksOut") // for multi topic links
+            var Newstype = e.querySelector("#newstypeOut") // type of news
+   
+
+
+            Name.innerHTML = article.title // .toUpperCase()
+            Sentiment.innerHTML = article.sentiment
+            Description.innerHTML = article.text
+            Sector.innerHTML = article.source_name
+            Url.innerHTML = article.news_url
+            Url.href = article.news_url
+            CoinIcon.src =  article.image_url
+            CoinIconlink.href =  article.news_url
+            Topics.innerHTML = article.topics
+            Sectorlink.href =  article.news_url
+            Namelink.href =  article.news_url
+            Descriptionlink.href =  article.news_url
+            Tickers.innerHTML = article.tickers
+            Newsdate.innerHTML = article.date
+            CopyIcon.innerHTML = '<i class="fas fa-link"></i>'
+            ShareIcon.innerHTML = '<i class="fas fa-share-alt"></i>'
+            Newsnow = moment(new Date()).unix()
+            Newsdate2.rawFloat = (((Newsnow - moment(article.date).unix())/3600)*60)
+            Newstype.innerHTML = article.type
+            Tickerlink.href = 'https://cointouch.co/crypto/' + article.tickers
+
+            if (Sentiment.innerHTML == "Positive") {
+                  Sentiment.style.color='#16de94'
+                
+   
+                } else if (Sentiment.innerHTML == "Negative"){
+                  Sentiment.style.color= '#bf5050' // was 0027 gb
+
+                } else {
+                  Sentiment.style.color= '#cccccc'
+
+                }
+
+            if (Topics.innerHTML == "whales") {
+                  Topics.style.color='#0096ff'
+                
+   
+                } else if (Topics.innerHTML == "regulations"){
+                  Topics.style.color= 'red' // was 0027 gb
+
+                } else if (Topics.innerHTML == "NFT"){
+                  Topics.style.color= 'magenta' // was 0027 gb
+
+                } else if (Topics.innerHTML == "paywall"){
+                  Topics.style.color= '#FFFFFF00' // was 0027 gb
+
+                } else if (Topics.innerHTML == "mining"){
+                  Topics.style.color= 'orange' // was 0027 gb
+
+                } else if (Topics.innerHTML == "tanalysis"){
+                  Topics.style.color= 'lime' // was 0027 gb
+
+                } else {
+                  Topics.style.color= 'white'
+
+                }
+
+             if (Newsdate2.rawFloat < 60) {
+                  Newsdate2.innerHTML = (Newsdate2.rawFloat).toFixed(0) + " minutes ago"
+                
+   
+                } else if (Newsdate2.rawFloat > 1440){
+                  Newsdate2.innerHTML = (Newsdate2.rawFloat/1440).toFixed(0) + " days ago"
+
+                } else {
+                   Newsdate2.innerHTML = (Newsdate2.rawFloat/60).toFixed(1) + " hours ago"
+
+                }
+
+
+              if (Newstype.innerHTML == "Article") {
+                  Newstype.innerHTML =  Newstype.innerHTML + '  <i class="fa-solid fa-newspaper"></i>'
+                
+   
+                } else if (Newstype.innerHTML == "Video"){
+                  Newstype.innerHTML =  Newstype.innerHTML + '  <i class="fa-solid fa-video"></i>'
+
+                } else {
+                   Newstype.innerHTML = Newstype.innerHTML
+
+                }
+
+      
+             const linkTemplate = '<a style="color:#00d9f2; font-size:.9em; text-decoration: underline;margin-right: 8px;" href="LINKHREF" target="_blank">LINKTEXT</a>';
+
+             let constructLinks = '';
+ 
+             if (article.tickers ) {
+			for (let i = 0; i < article.tickers.length; i++) {
+
+				// link to https://cointouch.co/crypto/SYMBOL
+
+				const fullsym = article.tickers[i];
+
+				// console.log("fullsym = " + fullsym);
+
+				const targetsite = 'https://www.cointouch.co/crypto/' + fullsym;
+
+				// console.log("targetsite = " + targetsite);
+				
+                                 const onelink = linkTemplate.replace('LINKTEXT', article.tickers[i]).replace('LINKHREF', targetsite);
+
+				constructLinks = constructLinks + onelink;
+
+				// console.log("constructLinks = " + constructLinks);
+			}
+
+		}
+
+        // example
+        // const newlink = '<a style="color:#ffffff;" href="https://www.cointouch.co" target="_blank">LINK A</a> <a style="color:#ff0000;" href="https://globefi.co" target="_blank">LINK B</a>';
+
+	   Tickerlinks.innerHTML = constructLinks;
+
+
+// topiclinks
+
+                const linkTemplate2 = '<a style="color:lime; font-size:.9em; text-decoration: underline;margin-right: 8px;" href="LINKHREF" target="_blank">LINKTEXT</a>';
+
+                 let constructLinks2 = '';
+
+               if (article.topics ) {
+			for (let i = 0; i < article.topics.length; i++) {
+
+				// link to https://globefi.co/topic
+
+				const fulltopic = article.topics[i];
+
+				// console.log("fulltopic = " + fulltopic);
+
+				const targetsite2 = 'https://www.globefi.co/' + fulltopic;
+
+				// console.log("targetsite2 = " + targetsite2);
+				
+                                 const onelink2 = linkTemplate2.replace('LINKTEXT', article.topics[i]).replace('LINKHREF', targetsite2);
+
+				constructLinks2 = constructLinks2 + onelink2;
+
+				// console.log("constructLinks2 = " + constructLinks2);
+			}
+
+		}
+
+          // example
+          // const newlink2 = '<a style="color:#ffffff;" href="https://www.globefi.co" target="_blank">LINK A</a> <a style="color:#ff0000;" href="https://globefi.co" target="_blank">LINK B</a>';
+
+	      Topiclinks.innerHTML = constructLinks2;
+
+
+          } // end of adding news to tiles
+
+          // now shut of display of empty tiles
+          for (let i = data.data.length; i < allSymbols.length; i++) {
+            var e = document.getElementById("onenews" + i.toString()) // main news block element similar to stock tile
+            e.style.display = 'none'
+          }
+
+        // note you can also get lots of other stuff including coins in circ it is SUPPLY perhaps
+        //let m = data['RAW'][sym]['USD']['MKTCAP']
+        //mktcapDirect[sym] = m
+        //priceMultiFull[sym] = data
+      })
+
+  })
+
+
+ let volumeSymbols = Object.keys(symName) // use symbol list from harcoded symName
+
+  let volumeDirect = {}
+
+  let volumeMultiFull = {} // save these data pulls in case we want anything else out of them
+
+  volumeSymbols.forEach(sym => { // sym needs to be upper case
+
+      // fetch lots of interesting stuff per coin (can batch them later)
+      
+      var urlPmv = 'https://min-api.cryptocompare.com/data/symbol/histoday?fsym=' + sym + '&tsym=USD&limit=1&api_key=6754e907a673813903283fa627c08c3935e4e80415973721ed33c0771c467323'
+
+      fetch(urlPmv)
+      .then(response => response.json())
+      .then(data => {
+        console.log("volume multi full " + JSON.stringify(Object.keys(data)))
+        // note you can also get lots of other stuff including coins in circ it is SUPPLY perhaps
+        let v = data ['Data']['0']['total_volume_total']
+        volumeDirect[sym] = v
+        volumeMultiFull[sym] = data
+      })
+
+  })
+
+
+
+  window.allSymbols = Object.keys(symName) // pull symbols only from above (make global so sort can get)
+
+  // set up internal list of onesymbol div objects based upon the template defined above
+
+  var template = document.getElementById("onenews")
+
+  for (var i = 0; i < allSymbols.length; i++) {
+
+     var clone = template.cloneNode(true) // clone children also e.g. the numbers and text in the tile
+
+     clone.className = clone.className + i.toString() // now the main class name will be like onesymbol0, onesymbol1, etc
+
+     clone.id = clone.id + i.toString()
+
+     document.body.appendChild(clone) // add this child to the main body of the page
+
+  }
+
+  // get rid of template onesymbol, we already have all the tiles now
+
+  template.remove()
+
+  var url_string = window.location.href
+  var url = new URL(url_string)
+  var sym = url.searchParams.get("sym")
+
+  // test
+  if (!sym) sym = "ETH"
+
+  // 2000 = milliseconds, delay randomly up to 2 seconds before launching to avoid
+  // overloading the other side 
+  setTimeout(connect, 3000*Math.random())
+
+  var savedBackgroundImage = null
+  var savedHighlightedTile = null
+
+
+  function connect() {
+
+    return // dont connect to stream for news test
+
+    var cc = new WebSocket('wss://streamer.cryptocompare.com/v2?api_key=6754e907a673813903283fa627c08c3935e4e80415973721ed33c0771c467323')
+
+    // build subs array from above allSymbols list
+
+    var subs = []
+
+    for (var i = 0; i < allSymbols.length; i++)
+      subs.push("5~CCCAGG~" + allSymbols[i] + "~USDT")
+
+   cc.onopen = function onStreamOpen() {
+     var subRequest = {
+        "action": "SubAdd",
+        "subs": subs 
+      };
+
+      cc.send(JSON.stringify(subRequest));
+   }
+
+    
+   var animSuffix = ''
+
+   var priceChangeArray = []
+
+   var lastPriceChangeTime = 0
+
+  const evtSource = new EventSource(cc);
+
+  console.log("hook up stream for " + sym)
+
+  var storedOpen24 = {} // open 24 referenced by symbol when it comes in from stream, does not come from stream every data objert
+
+  // new way we have many of the text elements by the same name so we have to find them by path
+
+  /*cc.onmessage = */function onStreamMessage(message) {
+
+    var incomingMessage = message
+    var message = event.data // something strange about this, review
+
+    console.log("Received from Cryptocompare: " + message)
+
+    if (!message) message = incomingMessage
+
+    var x = JSON.parse(message)
+
+    var sym = x["FROMSYMBOL"]
+
+
+    // compute which number tile we should assign this data to, based on the symbol coming in on the stream
+
+    if (!sym) return
+    
+    var tileNumber = allSymbols.findIndex(function(x) {
+      console.log("looking for sym " + sym)
+      if (sym) {
+        return x.toUpperCase() === sym.toUpperCase()
+      }
+    })
+
+    // get the text elements within this particular tile number
+
+    var topTile = document.querySelector('#onenews' + tileNumber)
+
+    
+    topTile.onmouseover = (event) => {
+      const target = event.currentTarget
+      savedBackgroundImage = target.style.backgroundImage
+      savedHighlightedTile = target
+      target.style.backgroundImage = null
+      target.style.backgroundColor = '#0000aa' // simple background color change hilite to start
+      // can do fancier as we go
+      // boost font size of price change and percent change as example
+      target.querySelector("#changeOut").classList.add("boostFont")
+      target.querySelector("#percentOut").classList.add("boostFont")
+      target.querySelector("#symOut").classList.add("boostFont")
+      target.querySelector("#priceOut").classList.add("boostFont")
+    }
+
+    topTile.addEventListener('mouseout', (event) => {
+      savedHighlightedTile.style.backgroundImage = savedBackgroundImage
+      savedHighlightedTile.querySelector("#changeOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#percentOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#symOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#priceOut").classList.remove("boostFont")
+    })
+
+    topTile.addEventListener('mouseleave', (event) => {
+      savedHighlightedTile.style.backgroundImage = savedBackgroundImage
+      savedHighlightedTile.querySelector("#changeOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#percentOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#symOut").classList.remove("boostFont")
+      savedHighlightedTile.querySelector("#priceOut").classList.remove("boostFont")
+    })
+
+
+    // for refreshing before data comes in e.g. changing tile colors
+    if (!topTile.lastMessage) // only store the first message
+      topTile.lastMessage = message
+
+    var element = document.querySelector('#onenews' + tileNumber).querySelector("#priceOut")
+    var symElement = document.querySelector('#onenews' + tileNumber).querySelector("#symOut")
+    var nameElement = document.querySelector('.onenews' + tileNumber).querySelector("#nameOut")
+    var volElement = document.querySelector('.onenews' + tileNumber).querySelector("#volOut")
+    var vol1dElement = document.querySelector('.onenews' + tileNumber).querySelector("#relvol1dOut") // was vol1dOut doesnt match other uses
+    var mcsupplyElement = document.querySelector('.onenews' + tileNumber).querySelector("#mcsupplyOut")
+    var mktcapElement = document.querySelector('.onenews' + tileNumber).querySelector("#mktcapOut")
+    var mktcapDirectElement = document.querySelector('.onenews' + tileNumber).querySelector("#mktcapDirectOut")
+    var volumeDirectElement = document.querySelector('.onenews' + tileNumber).querySelector("#volumeDirectOut")
+    var totalvolElement = document.querySelector('.onenews' + tileNumber).querySelector("#totalvolOut")
+    var vol1hElement = document.querySelector('.onenews' + tileNumber).querySelector("#vol1hOut")
+    var avgvol7dElement = document.querySelector('.onenews' + tileNumber).querySelector("#avgvol7dOut")
+    var avgvolElement = document.querySelector('.onenews' + tileNumber).querySelector("#avgvolOut")
+    var relvol1hlabelElement = document.querySelector('.onenews' + tileNumber).querySelector("#relvol1hlabelOut")
+    var relvol1dlabelElement = document.querySelector('.onenews' + tileNumber).querySelector("#relvol1dlabelOut")
+    var relvol1hElement = document.querySelector('.onenews' + tileNumber).querySelector("#relvol1hOut")
+    var relvol1dElement = document.querySelector('.onenews' + tileNumber).querySelector("#relvol1dOut")
+    var ytdlabelElement = document.querySelector('.onenews' + tileNumber).querySelector("#ytdlabelOut")
+    var ytdElement = document.querySelector('.onenews' + tileNumber).querySelector("#ytdOut")
+    var ytd2Element = document.querySelector('.onenews' + tileNumber).querySelector("#ytd2Out")
+    var open24Element = document.querySelector('.onenews' + tileNumber).querySelector("#open24Out")
+    var percElement = document.querySelector('.onenews' + tileNumber).querySelector("#percentOut")
+    var changeElement = document.querySelector('.onenews' + tileNumber).querySelector("#changeOut")
+    var ytdchangeElement = document.querySelector('.onenews' + tileNumber).querySelector("#ytdchangeOut")
+    var backgroundDiv = document.querySelector('.onenews' + tileNumber)
+    var coinIcon = document.querySelector('.onenews' + tileNumber).querySelector("#coinIcon")
+    var sectorElement = document.querySelector('.onenews' + tileNumber).querySelector("#sectorOut")
+    var sentimentElement = document.querySelector('.onenews' + tileNumber).querySelector("#sentimentOut")
+    var sentimentMElement = document.querySelector('.onenews' + tileNumber).querySelector("#sentimentMOut")
+    var tickersElement = document.querySelector('.onenews' + tileNumber).querySelector("#tickersOut")
+    var newsdateElement = document.querySelector('.onenews' + tileNumber).querySelector("#newsdateOut")
+    var descriptionElement = document.querySelector('.onenews' + tileNumber).querySelector("#descriptionOut")
+    var urlElement = document.querySelector('.onenews' + tileNumber).querySelector("#urlOut")
+    var abxElement = document.querySelector('.onenews' + tileNumber).querySelector("#abxOut")
+    var tradelinkElement = document.querySelector('.onenews' + tileNumber).querySelector("#tradelinkOut")
+    var tradelink2Element = document.querySelector('.onenews' + tileNumber).querySelector("#tradelink2Out")
+    var moreElement = document.querySelector('.onenews' + tileNumber).querySelector("#moreOut")
+
+
+  
+
+
+   var tickers = onenews['tickers']
+
+   tickersElement.innerHTML = JSON.stringify(tickers)
+
+   var newsdate = onenews['date']
+
+   newsdateElement.innerHTML = newsdate
+
+
+
+    nameElement.innerHTML = symName[sym] // assign name
+
+    symElement.innerHTML = sym // + "BTC"
+
+    if (!coinIcon.assigned) {// avoid doing this every time if it is already assigned, could be a slow call
+      coinIcon.src = imageUrlTable[sym]
+      coinIcon.assigned = true // hack 
+    }
+
+    var priorPrice = element.innerHTML.replace('$', '') // for color pop get rid of dollar sign
+
+    var price = x["PRICE"]
+
+    if (price) { // price is sometimes not defined so check for it
+      console.log("price = " + price)
+      var decimals = price > 10.00 ? 3 : 6 // use more decimal places for under 10 dollar coins
+      element.innerHTML = "$" + price.toFixed(decimals)
+    } else {
+
+        // it looks like sometimes no price comes in , which is going to mess up change, etc, so ignore for now
+        // e.g. sometimes only volume data is coming in (handle that later)
+        
+        return // just get out if no price
+    }
+
+    var priceDelta = 0                // for color pop
+
+    if (priorPrice != 0 && price > 0) {   // for color pop
+      priceDelta = price - priorPrice     // for color pop
+    }                                 // for color pop
+
+
+    var open24 = x["OPEN24HOUR"]
+
+    var change = 0
+
+    if (open24)
+      storedOpen24[sym] = open24
+    else 
+      open24 = storedOpen24[sym] // get open24 from in mem storage if it is not specified in this stream chunk
+
+
+    if (open24) { // open24 is sometimes not defined so check for it
+      console.log("open24 = " + open24)
+      open24Element.innerHTML = "Open24H: " + open24
+
+      if (!price) {
+        console.log("caution, price is undefined when computing change")
+      }
+      change = (price.toFixed(6) - open24.toFixed(6))
+    } else {
+      console.log("caution open24 is 0")
+    }
+
+    
+
+    // Copyright Abxium Inc 2021 -- all rights reserved 
+   // min max in percent (note:  we are using backgroundGradients but we leave the solid color background for example just in case)
+    var backgroundColors = [ 
+
+    {'min' :  5.0, 'max' : 1000, 'color' :  '#33ff33'}, // green
+    {'min' :  2.0, 'max' : 5.0, 'color' :   '#33bb33'},  // more green
+    {'min' :  0.5, 'max' : 2.0, 'color' :   '#338833'}, // dark green
+
+    {'min' : -0.5, 'max' : 0.5, 'color' :   '#333333'},  // dark gray
+
+    {'min' : -2.0, 'max'  : -0.5, 'color' :  '#883333'}, // dark red
+    {'min' : -5.0, 'max'  : -2.0, 'color' :  '#bb3333'}, // more red
+    {'min' : -1000, 'max' : -5.0, 'color' : '#ff3333'} // red
+
+    ]
+
+    // 'color' is bottom color, 'colorTop' is top color
+    var backgroundGradients = [ 
+
+    {'min' :  5.0, 'max' : 1000, 'color' :  '#016810', colorTop: '#07ab35'}, // green
+    {'min' :  2.0, 'max' : 5.0, 'color' :   '#012714', colorTop: '#02400B'},  // more green
+    {'min' :  0.5, 'max' : 2.0, 'color' :   '#011c0e', colorTop: '#012714'}, // dark green
+
+    {'min' : -0.5, 'max' : 0.5, 'color' :   '#10121a', colorTop: '#171924'},  // dark gray
+
+    {'min' : -2.0, 'max'  : -0.5, 'color' :  '#170101', colorTop: '#260102'}, // dark red
+    {'min' : -5.0, 'max'  : -2.0, 'color' :  '#260102', colorTop: '#460103'}, // more red
+    {'min' : -1000, 'max' : -5.0, 'color' : '#460103', colorTop: '#6A0312'} // red
+
+    ]
+
+    // RELVOL GRAD color is bottom color 'colorTop' is top color this has revised pink blue dark grey RelVol tile scale
+
+    var backgroundGradientsRelVol = [ 
+
+    {'min' :  160, 'max' : 10000, 'color' :  '#a30278', colorTop: '#c2008e'},    // pink
+    {'min' :  130, 'max' : 160, 'color' :  '#000088', colorTop: '#0000ff'},     // bright blue
+    {'min' :  110, 'max' : 130, 'color' :  '#000033', colorTop: '#000088'},    // bright blue
+
+    {'min' : 90, 'max' : 110, 'color' :  '#02101f', colorTop: '#171924'},    // med blue
+
+    {'min' : 70, 'max'  : 90, 'color' :  '#02101f', colorTop: '#171924'},  //  med blue
+    {'min' : 40, 'max'  : 70, 'color' :  '#02101f', colorTop: '#171924'}, //  dark grey gradient
+    {'min' : 0, 'max' : 40, 'color' :  '#02101f', colorTop: '#171924'}   //  dark grey gradient
+
+    ]
+
+
+
+    // figure background color based on percent
+    function findBackgroundColor(percent) {
+           for (var i = 0; i < backgroundColors.length; i++) {
+              if (percent > backgroundColors[i].min && percent <= backgroundColors[i].max) 
+                return backgroundColors[i].color
+           }
+        }
+
+    // figure background gradient based on percent
+    function findBackgroundGradient(percent) {
+           for (var i = 0; i < backgroundGradients.length; i++) {
+              if (percent > backgroundGradients[i].min && percent <= backgroundGradients[i].max) 
+                return backgroundGradients[i]
+           }
+           console.log('***** caution cant find background gradient for percent ' + percent)
+           return backgroundGradients[3] // return gray
+        }
+
+    // figure background gradient based on percent
+    function findBackgroundGradientRelVol(percent) {
+           for (var i = 0; i < backgroundGradientsRelVol.length; i++) {
+              if (percent > backgroundGradientsRelVol[i].min && percent <= backgroundGradientsRelVol[i].max) 
+                return backgroundGradientsRelVol[i]
+           }
+           console.log('***** caution cant find background gradient for percent ' + percent)
+           return backgroundGradientsRelVol[3] // return gray
+        }
+
+
+    console.log('ready to compute percent, change = ' + change + " open24 = " + open24)
+
+    var percent = (change / open24*100)
+
+
+      // color pop of price test
+
+      // future prep to take average of many price deltas
+      priceChangeArray.push(priceDelta)
+
+      const maxAvgCount = 10
+      if (priceChangeArray.length > maxAvgCount) priceChangeArray.shift() // remove 1st item if we already have max
+
+      let avgPriceDelta = priceChangeArray/priceChangeArray.length
+
+      element.style.animationName = 'none'
+
+      // if we have to set the same animation name twice in a row
+         // the browser doesnt trigger the animate (it thinks there is nothing to change)
+         //  so we have dual animations for each color and alternate between them
+
+         if (animSuffix == '') animSuffix = '1'
+          else if (animSuffix == '1') animSuffix = ''
+
+        var timeDelta = Date.now() - lastPriceChangeTime
+
+        var priceDeltaToUse = priceDelta
+        
+        // if data is coming in too fast, use average price delta and dont pop 
+
+        // time in millisec
+
+        const timeCutoff = 1000
+
+        // future: if (timeDelta < timeCutoff) priceDeltaToUse = avgPriceDelta
+
+        if (priceDeltaToUse != 0) {
+            // animated pop logic
+            console.log("price delta " + priceDelta)
+            if (priceDelta > 0)
+              element.style.animationName = 'popGreen' + animSuffix
+            else 
+              element.style.animationName = 'popRed' + animSuffix 
+        } else if (false) { // dont do this yet
+
+          // just make the color solid if data is coming in fast to avoid too much flashing
+          // only if market hours (have to fix for weekend)
+
+
+            if (priceDelta > 0)
+              element.style.color = 'green'
+            else 
+              element.style.color = 'red' 
+
+        }
+
+        //backgroundDiv.style.backgroundColor =  findBackgroundColor(percent*100)
+
+        var gradient = findBackgroundGradient(percent) // default use price tile colors
+
+        //backgroundDiv.style.backgroundImage.linearGradient(gradient.color, gradient.colorTop)
+
+        var grad1 = '-webkit-linear-gradient(' + gradient.colorTop + ', ' + gradient.color + ')'
+
+        console.log("grad1 = " + grad1)
+
+      backgroundDiv.style.backgroundImage = grad1
+
+    var vol = x["TOPTIERVOLUME24HOURTO"]
+
+
+    var vol1h = x["VOLUMEHOURTO"]
+    
+    vol1hElement.innerHTML = "Vol1H: " + vol1h.toFixed(0)
+
+    volElement.innerHTML = "Vol: " + vol+vol1h.toFixed(0)
+
+    volElement.rawFloat = vol
+
+    vol1hElement.rawFloat = vol1h
+
+    var relvol1hlabel = "RelVol1H: "
+
+    relvol1h = vol1h/(vol/24)
+
+    relvol1hElement.innerHTML = + (relvol1h*100).toFixed(2) + "%"
+
+    relvol1hElement.rawFloat = relvol1h*100
+
+    // override prior computed tile color gradient if map selector is set to Volume
+    if (window.STMapValue == "RelVol1H") { // pick a volume tile color instead (rel vol)
+          console.log("volume tile compute from " + relvol1hElement.rawFloat)
+          gradient = findBackgroundGradientRelVol(relvol1hElement.rawFloat)
+          var grad2 = '-webkit-linear-gradient(' + gradient.colorTop + ', ' + gradient.color + ')'
+          console.log("grad2 = " + grad2)
+          backgroundDiv.style.backgroundImage = grad2
+    }
+
+    // override prior computed tile color gradient if map selector is set to Volume
+    if (window.STMapValue == "RelVolSolid") { // pick a volume tile color instead (rel vol)
+          console.log("volume tile compute from " + percElement.rawFloat)
+          gradient = findBackgroundGradientRelVol(percElement.rawFloat)
+          var grad4 = '-webkit-linear-gradient(' + gradient.colorTop + ', ' + gradient.color + ')'
+          console.log("grad4 = " + grad4)
+          backgroundDiv.style.backgroundImage = grad4
+    }
+
+
+    // override prior computed tile color gradient if map selector is set to Volume
+    if (window.STMapValue == "NewsSentiment") { // pick a news sentiment using relvol tile color instead (rel vol)
+          console.log("volume tile compute from " + sentimentMElement.rawFloat)
+          gradient = findBackgroundGradientRelVol(sentimentMElement.rawFloat)
+          var grad4 = '-webkit-linear-gradient(' + gradient.colorTop + ', ' + gradient.color + ')'
+          console.log("grad5 = " + grad5)
+          backgroundDiv.style.backgroundImage = grad5
+    }
+
+
+                if (Math.abs(relvol1h)> 1.00) {
+                  relvol1hlabelElement.style.color='#9370db'
+                  relvol1hlabelElement.innerHTML = relvol1hlabel
+                  relvol1hElement.style.color='#9370db'
+
+                  relvol1hElement.innerHTML = + (relvol1h*100).toFixed(2) + "%"
+                  relvol1hElement.rawFloat = relvol1h*100
+                  
+                
+   
+                } else {
+                  relvol1hlabelElement.style.color='#9370db'
+                  relvol1hlabelElement.innerHTML = relvol1hlabel
+                  relvol1hElement.style.color='#9370db'
+                  relvol1hElement.innerHTML = + (relvol1h*100).toFixed(2) + "%"
+                  relvol1hElement.rawFloat = relvol1h*100
+                }
+
+
+
+   var mktcap = mcsupply[sym] * price
+
+   if (mktcapDirect[sym]) { // if we have actual mkt cap from REST api , use it
+     console.log("using crypto compare mktcap")
+     mktcap = mktcapDirect[sym]
+   }
+
+    mktcapElement.innerHTML = "MktCap: " + mktcap.toFixed(0)
+
+    mktcapElement.rawFloat = mktcap.toFixed(0)
+
+    var totalvol = volumeDirect[sym]
+
+
+    totalvolElement.innerHTML = "Volume: " + totalvol.toFixed(0)
+
+    totalvolElement.rawFloat = totalvol.toFixed(0)
+ 
+    vol1d = vol
+
+    vol1dElement.innerHTML = "Vol24H: " + vol1d
+
+    vol1dElement.rawFloat = vol1d
+
+
+    var avgvol = avgvol7d[sym]
+
+    var relvol1dlabel = "RelVol1D: "
+
+    relvol1dlabel.innerHTML = + relvol1dlabel
+
+    var relvol1d = vol1d/avgvol
+
+    relvol1dElement.innerHTML = + (relvol1d*100).toFixed(2) + "%"
+
+    relvol1dElement.rawFloat = relvol1d*100
+
+    // override prior computed tile color gradient if map selector is set to Volume
+    if (window.STMapValue == "RelVol1D") { // pick a volume tile color instead (rel vol)
+          console.log("volume tile compute from " + relvol1dElement.rawFloat)
+          gradient = findBackgroundGradientRelVol(relvol1dElement.rawFloat)
+          var grad2 = '-webkit-linear-gradient(' + gradient.colorTop + ', ' + gradient.color + ')'
+          console.log("grad2 = " + grad2)
+          backgroundDiv.style.backgroundImage = grad2
+    }
+
+
+                if (Math.abs(relvol1d)> 1.00) {
+                  relvol1dlabelElement.style.color='#FF00FF'
+                  relvol1dlabelElement.innerHTML = relvol1dlabel
+                  relvol1dElement.style.color='#FF00FF'
+                  relvol1dElement.innerHTML = + (relvol1d*100).toFixed(2) + "%"
+                  relvol1dElement.rawFloat = relvol1d*100
+                  
+                
+   
+                } else {
+                  relvol1dlabelElement.style.color='#FF00FF'
+                  relvol1dlabelElement.innerHTML = relvol1dlabel
+                  relvol1dElement.style.color='#FF00FF'
+                  relvol1dElement.innerHTML = + (relvol1d*100).toFixed(2) + "%"
+                  relvol1dElement.rawFloat = relvol1d*100
+                }
+
+    var ytdlabel = "YTD:  "
+
+    
+    var ytd = ytdTable[sym]
+
+    var ytdchange = price ? price.toFixed(6)-ytd : 0
+                
+    var ytd2 = price ? (((price.toFixed(6)-ytd)/ytd)*100).toFixed(2) : 0
+
+                if (ytd2> 0) {
+                  ytdlabelElement.style.color='#16de94'
+                  ytdlabelElement.innerHTML = ytdlabel
+                  ytd2Element.style.color='#16de94'
+                  ytd2Element.innerHTML = "+" + ytd2 + "%"
+
+                  ytd2Element.rawFloat = ytd2
+
+                  ytdchangeElement.style.color='#16de94'
+                  ytdchangeElement.innerHTML = 'YTD: &nbsp;' + "&#x25B4;" + ytdchange.toFixed(3)
+                  
+                
+   
+                } else {
+                  ytdlabelElement.style.color= '#bf0027'
+                  ytdlabelElement.innerHTML = ytdlabel
+                  ytd2Element.style.color='#bf0027'
+                  ytd2Element.innerHTML = "-" + Math.abs(ytd2) + "%"
+
+                  ytd2Element.rawFloat = ytd2
+
+                  ytdchangeElement.style.color='#bf0027'
+                  ytdchangeElement.innerHTML = 'YTD: &nbsp;' + "&#x25B4;" + ytdchange.toFixed(3)
+                }
+    
+    var sector = sectorName[sym]
+
+    sectorElement.innerHTML = sector
+
+    var sentimentM = 1
+
+    sentimentM.innerHTML = sentimentM
+
+
+    var description = descriptionName[sym]
+
+    descriptionElement.innerHTML = description
+
+    var url = urlTable[sym]
+
+    urlElement.innerHTML = url
+
+    var abx= moreTable[sym]
+
+    abxElement.innerHTML = abx
+
+    var tradelink = tradeTable[sym]
+
+    tradelinkElement.innerHTML = tradelink
+
+    var tradelink2 = tradeTable[sym]
+
+    tradelink2Element.innerHTML = '<a href=' + tradelink + '><i class="fa fa-bolt"></i></a>'
+
+    
+    var more = moreTable[sym]
+
+    moreElement.innerHTML = '<a href=' + more + '><i class="fa fa-th-large"></i></a>'
+
+        
+        function goToLink() {
+          console.log('tap on tile ok') 
+          //location.href = more // this opens in same window, send message to parent instead
+          //console.log("window.parent = " + window.parent)
+          window.parent.postMessage({"goTo" : more }, "*")
+        }
+
+       topTile.onclick = goToLink
+       
+      computeAggregates() // average percent etc
+
+     } // onStreamMessage
+
+     window.onStreamMessage = onStreamMessage // allow others to get at this
+
+     cc.onmessage = onStreamMessage // we re-use this for a refresh of tiles
+
+   }
+  
+
+
+</script>
+</html>
+<!--HTTPS only...-->
